@@ -3,7 +3,7 @@
 </p>
 
 
-Lucas Santos Brito = Gerente de Projeto<br>
+Lucas Santos Brito = Gerente de Projeto <br>
 Manuela Alexandre Vargas = Documentadora <br>
-Carlos Daniel da Silva Vieira = Desenvolvedor
+Carlos Daniel da Silva Vieira = Desenvolvedor <br>
 Samuel Vieira de Souza = Desenvolvedor
