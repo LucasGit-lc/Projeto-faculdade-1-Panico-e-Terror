@@ -6,4 +6,5 @@
 Lucas Santos Brito = Gerente de Projeto <br>
 Manuela Alexandre Vargas = Documentadora <br>
 Carlos Daniel da Silva Vieira = Desenvolvedor <br>
+Luan de Moura Santos = Analista de Requisitos / Scrum Master <br>
 Samuel Vieira de Souza = Desenvolvedor
