@@ -4,3 +4,4 @@
 
 
 Lucas Santos Brito = Gerente de Projeto
+Manuela Alexandre Vargas= Documentadora 
