@@ -36,7 +36,7 @@ app.post('/cadastro', async (req, res) => {
     );
     res.send('Cadastro realizado com sucesso!');
   } catch (err) {
-    if (err.code === '23505') { // erro de email duplicado
+    if (err.code === '23505') { 
       res.status(400).send('Email já cadastrado!');
     } else {
       res.status(500).send('Erro ao cadastrar');
