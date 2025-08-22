@@ -12,9 +12,19 @@
     <title>Cadastro</title>
   </head>
   <body>
-    <div class="container">
+    <main>
+      <div class="container">
         <h2>Cadastre-se</h2>
-        
-    </div>
+
+        <form action="http://localhost:3000/cadastro" method="POST">
+          <input type="text" name="nome" placeholder="Nome" required />
+          <input type="email" name="email" placeholder="Email" required />
+          <input type="password" name="senha" placeholder="Senha" required />
+          <button type="submit">Seguinte</button>
+        </form>
+      </div>
+    </main>
+
+    <script src="./src/js/index.js""></script>
   </body>
 </html>
