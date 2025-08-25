@@ -9,6 +9,7 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="style.css">
     <title>Cadastro</title>
   </head>
   <body>
@@ -17,8 +18,11 @@
         <h2>Cadastre-se</h2>
 
         <form action="http://localhost:3000/cadastro" method="POST">
+          <p>Nome</p>
           <input type="text" name="nome" placeholder="Nome" required />
+          <p>Email</p>
           <input type="email" name="email" placeholder="Email" required />
+          <p>Senha</p>
           <input type="password" name="senha" placeholder="Senha" required />
           <button type="submit">Seguinte</button>
         </form>
