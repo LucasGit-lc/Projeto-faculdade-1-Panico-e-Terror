@@ -9,26 +9,36 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="src/css/style.css">
+    <link rel="stylesheet" href="src/css/reset.css">
     <title>Cadastro</title>
   </head>
   <body>
-    <main>
       <div class="container">
         <h2>Cadastre-se</h2>
 
         <form action="https://projeto-faculdade-1-panico-e-terror-production.up.railway.app/cadastro" method="POST">
-          <p>Nome</p>
-          <input type="text" name="nome" placeholder="Nome" required />
-          <p>Email</p>
-          <input type="email" name="email" placeholder="Email" required />
-          <p>Senha</p>
-          <input type="password" name="senha" placeholder="Senha" required />
-          <button type="submit">Seguinte</button>
+
+          <section class="inputArea"> 
+            <p>Nome</p>
+              <input class ="inputBox" type="text" name="nome" required />
+      
+
+            <p>Email</p>
+          
+              <input class ="inputBox" type="email" name="email" required />
+         
+
+            <p>Senha</p>
+
+              <input class ="inputBox" type="password" name="senha" required />
+          
+
+            <button type="submit">Validar Cadastro</button>
+          </section>
         </form>
       </div>
-    </main>
 
-    <script src="./src/js/index.js""></script>
+    <script src="src/js/index.js""></script>
   </body>
 </html>
