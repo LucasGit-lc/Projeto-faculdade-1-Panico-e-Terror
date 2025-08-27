@@ -69,11 +69,11 @@ body {
         border-style: none;
         color: #FFF;
         font-family: Poppins;
-        font-size: 32px;
+        font-size: 28px;
         font-style: normal;
         font-weight: 500;
         line-height: normal;
-        margin: -17px 0 0 0;
+        margin: 10px 0 0 0;
     }
 
     button:hover {
@@ -81,7 +81,8 @@ body {
         background: #ffffff;
         color: #B32E25;
         transition: all 0.3s ease;
-        font-weight: 600;
+        font-weight: 500;
+        font-size: 32px;
     }
 
     a {
@@ -89,13 +90,13 @@ body {
     display: block;
     width: 489px;
     height: 45px;
-    margin-top: 15px;
     font-family: Poppins, Arial, sans-serif;
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 400;
     color: #B32E25;
-    text-decoration: none;
+    text-decoration: underline;
     transition: all 0.3s ease;
+    text-align: center;
     }
 
     
