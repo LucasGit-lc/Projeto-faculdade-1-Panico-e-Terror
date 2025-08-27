@@ -73,7 +73,7 @@ body {
         font-style: normal;
         font-weight: 500;
         line-height: normal;
-        margin: 37px 0 0 0;
+        margin: -17px 0 0 0;
     }
 
     button:hover {
@@ -83,4 +83,20 @@ body {
         transition: all 0.3s ease;
         font-weight: 600;
     }
+
+    a {
+
+    display: block;
+    width: 489px;
+    height: 45px;
+    margin-top: 15px;
+    font-family: Poppins, Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #B32E25;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    }
+
+    
 }
