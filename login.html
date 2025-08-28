@@ -1,46 +1,46 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/Projeto-faculdade-1-Panico-e-Terror/src/css/style.css">
+    <link rel="stylesheet" href="/Projeto-faculdade-1-Panico-e-Terror/src/css/reset.css">
+    <title>Login</title>
+  </head>
+  <body>
+      <div class="container">
+        <h2>Logar</h2>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./src/css/style.css">
-  <link rel="stylesheet" href="./src/css/reset.css">
+        <form action="https://projeto-faculdade-1-panico-e-terror-production.up.railway.app/cadastro" method="POST">
 
-  <title>Login</title>
-</head>
+          <section class="inputArea"> 
+            <p>Nome</p>
+              <input class ="inputBox" type="text" name="nome" required />
+      
 
-<body>
-  <div class="container">
-    <h2>Logar</h2>
+            <p>Email</p>
+          
+              <input class ="inputBox" type="email" name="email" required />
+         
 
-    <form action="https://projeto-faculdade-1-panico-e-terror-production.up.railway.app/cadastro" method="POST">
+            <p>Senha</p>
 
-      <section class="inputArea">
-        <p>Nome</p>
-        <input class="inputBox" type="text" name="nome" required />
+              <input class ="inputBox" type="password" name="senha" required />
 
+            <a href="/Projeto-faculdade-1-Panico-e-Terror/index.html">Não Tenho conta</a>
+          
 
-        <p>Email</p>
+            <button type="submit">Fazer login</button>
+          </section>
+        </form>
+      </div>
 
-        <input class="inputBox" type="email" name="email" required />
-
-
-        <p>Senha</p>
-
-        <input class="inputBox" type="password" name="senha" required />
-
-
-        <button type="submit">Fazer login</button>
-
-        <a href="/Projeto-faculdade-1-Panico-e-Terror/index.html">Não Tenho conta</a>
-      </section>
-    </form>
-  </div>
-
-  <script src="src/js/index.js""></script>
+    <script src="src/js/index.js"></script>
   </body>
 </html>
