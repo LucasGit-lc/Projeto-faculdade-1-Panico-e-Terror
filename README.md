@@ -12,4 +12,6 @@ Samuel Vieira de Souza = Desenvolvedor
 cronograma e kanban:
 https://ads608615.monday.com/boards/9875099783/views/209743404
 <br>
-backlog: https://miro.com/app/board/uXjVJPSdSz4=/
+backlog do artefato: https://miro.com/app/board/uXjVJPSdSz4=/
+<br>
+backlog: https://miro.com/app/board/uXjVJPVSn_0=/
