@@ -60,7 +60,9 @@ app.post('/login', async (req, res) => {
         res.status(500).send('Erro no servidor');
     }
 });
-app.use(bodyParser.urlencoded({ extended: true }));
+// Middlewares para parsing de corpos de requisições
+app.use(bodyParser.urlencoded({ extended: true })); // Formulários tradicionais
+app.use(bodyParser.json()); // Requisições JSON (AJAX/Fetch)
 
 // Rota de cadastro existente
 
