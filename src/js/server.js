@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 const app = express();
 // Configuração de CORS
 app.use(cors({
-  origin: ['https://lucasgit-lc.github.io', 'http://localhost'], // Permitimos o domínio do GitHub e localhost
+  origin: ['https://lucasgit-lc.github.io', 'https://projeto-faculdade-1-panico-e-terror-production.up.railway.app', 'http://localhost'], // Permitimos o domínio do GitHub, produção e localhost
   methods: ['GET', 'POST'],
   credentials: true,
   optionsSuccessStatus: 200
