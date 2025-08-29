@@ -3,12 +3,9 @@ const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
-const path = require('path');
 
 const app = express();
 app.use(cors());
-
-app.use(express.static(path.join(__dirname, '../../')));
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -67,8 +64,7 @@ app.post('/login', async (req, res) => {
     if (!senhaCorreta) {
       return res.status(401).send('Email ou senha incorretos!');
     }
-    
-    res.redirect('/pagina-inicial.html');
+
   } catch (err) {
     console.error(err);
     res.status(500).send('Erro ao fazer login');
