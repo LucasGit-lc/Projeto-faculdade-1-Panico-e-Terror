@@ -2,8 +2,10 @@
   "name": "projeto-faculdade-1-panico-e-terror",
   "version": "1.0.0",
   "description": "<p align=\"center\">\r   <img src=\"LogoMarca%20-%20Git.jpg\" alt=\"Logo do Projeto\" width=\"350\">\r </p>",
-  "main": "index.js",
+  "main": "src/js/server.js",
   "scripts": {
+    "start": "node src/js/server.js",
+    "dev": "nodemon src/js/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
