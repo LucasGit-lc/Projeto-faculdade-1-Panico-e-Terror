@@ -5,7 +5,13 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 
 const app = express();
-app.use(cors());
+// Configuração de CORS
+app.use(cors({
+  origin: ['https://lucasgit-lc.github.io', 'http://localhost'], // Permitimos o domínio do GitHub e localhost
+  methods: ['GET', 'POST'],
+  credentials: true,
+  optionsSuccessStatus: 200
+}));
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
