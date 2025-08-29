@@ -12,9 +12,57 @@ const pool = new Pool({
   ssl: {
     rejectUnauthorized: false,
   },
-});
+}); // Fim do cadastro
 
+// Nova rota de login
+app.post('/login', async (req, res) => {
+    const { email, senha } = req.body;
+    
+    if (!email || !senha) {
+        return res.status(400).send('Email e senha são obrigatórios!');
+    }
+    
+    if (!email.includes('@')) {
+        return res.status(400).send('Email inválido!');
+    }
+    
+    try {
+        // Verificar se o usuário existe
+        const result = await pool.query(
+            'SELECT * FROM usuarios WHERE email = $1', 
+            [email]
+        );
+        
+        const usuario = result.rows[0];
+        
+        if (!usuario) {
+            return res.status(400).send('Credenciais inválidas!');
+        }
+        
+        // Comparar senha criptografada
+        const senhaValida = await bcrypt.compare(senha, usuario.senha);
+        
+        if (!senhaValida) {
+            return res.status(400).send('Credenciais inválidas!');
+        }
+        
+        // Login bem sucedido - retornar dados do usuário
+        res.json({
+            sucesso: true,
+            usuario: {
+                nome: usuario.nome,
+                email: usuario.email
+            }
+        });
+        
+    } catch (err) {
+        console.error('Erro durante login:', err);
+        res.status(500).send('Erro no servidor');
+    }
+});
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Rota de cadastro existente
 
 app.post('/cadastro', async (req, res) => {
   const { nome, email, senha } = req.body;

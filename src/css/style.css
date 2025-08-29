@@ -7,6 +7,85 @@ body {
     background-color: #f0f0f0;
 }
 
+.login-container {
+    background-color: #0C0C0C;
+    border-radius: 11px;
+    width: 603px;
+    max-width: 489px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    margin: 2rem auto;
+    min-height: 520px;
+}
+
+.login-container h2 {
+    font-family: Poppins;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.login-container .inputArea {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.login-container .inputArea .inputBox {
+    background-color: #ffffff;
+    width: 100%;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.login-container .inputArea button {
+    width: 100%;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #B32E25;
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-family: Poppins;
+    font-size: 28px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.login-container .inputArea button:hover {
+    background-color: #fff;
+    color: #B32E25;
+    font-size: 32px;
+}
+
+.login-container .toggle-link {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.login-container .toggle-link a {
+    color: #B32E25;
+    text-decoration: underline;
+    transition: all 0.3s ease;
+}
+
+.login-container .error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
 .container {
     background-color: #0C0C0C;
     stroke-width: 1px;
