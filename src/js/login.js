@@ -8,8 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const email = form.querySelector('input[name="email"]').value;
     const senha = form.querySelector('input[name="senha"]').value;
 
-    // Criar FormData para enviar como application/x-www-form-urlencoded
-    const formData = new FormData();
+    // Criar URLSearchParams para enviar como application/x-www-form-urlencoded
+    const formData = new URLSearchParams();
     formData.append("email", email);
     formData.append("senha", senha);
 
