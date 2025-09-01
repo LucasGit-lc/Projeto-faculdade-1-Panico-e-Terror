@@ -99,5 +99,25 @@ body {
     text-align: center;
     }
 
-    
+    .mensagem {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+      width: 489px;
+      text-align: center;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 16px;
+    }
+
+    .erro {
+      background-color: #ffdddd;
+      color: #B32E25;
+      border: 1px solid #B32E25;
+    }
+
+    .sucesso {
+      background-color: #ddffdd;
+      color: #006400;
+      border: 1px solid #006400;
+    }
 }
