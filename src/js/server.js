@@ -5,7 +5,10 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: '*', // Em produção, especifique os domínios permitidos
+  methods: ['GET', 'POST']
+}));
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -75,6 +78,6 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log("Servidor rodando na porta 3000");
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Servidor rodando na porta ${process.env.PORT || 3000}`);
 });

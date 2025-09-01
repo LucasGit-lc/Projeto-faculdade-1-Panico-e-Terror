@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
     formData.append('email', email);
     formData.append('senha', senha);
     
-    // Enviar requisição para o servidor no Railway
-    fetch('https://projeto-faculdade-1-panico-e-terror-production.up.railway.app/login', {
+    // Enviar requisição para o servidor no Railway com a URL correta
+    fetch('https://miraculous-enchantment-production.up.railway.app/login', {
       method: 'POST',
       body: formData
     })
