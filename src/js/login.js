@@ -8,19 +8,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const email = form.querySelector('input[name="email"]').value;
     const senha = form.querySelector('input[name="senha"]').value;
     
-    // Criar objeto com os dados do formulário
-    const dados = {
-      email: email,
-      senha: senha
-    };
+    // Criar FormData para enviar como application/x-www-form-urlencoded
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('senha', senha);
     
     // Enviar requisição para o servidor no Railway
     fetch('https://projeto-faculdade-1-panico-e-terror-production.up.railway.app/login', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(dados)
+      body: formData
     })
     .then(response => {
       if (response.ok) {
