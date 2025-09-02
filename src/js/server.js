@@ -6,9 +6,14 @@ const bcrypt = require('bcrypt');
 
 const app = express();
 app.use(cors({
-  origin: ['https://lucasgit-lc.github.io', 'http://localhost:5500'], // Adicione seu domínio GitHub Pages
+  origin: [
+    'https://lucasgit-lc.github.io',
+    'https://lucasgit-lc.github.io/Projeto-faculdade-1-Panico-e-Terror',
+    'http://localhost:5500',
+    'http://127.0.0.1:5500'
+  ],
   methods: ['GET', 'POST'],
-  credentials: true // Permite enviar cookies e cabeçalhos de autenticação
+  credentials: true
 }));
 
 const pool = new Pool({
