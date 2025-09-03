@@ -121,3 +121,7 @@ body {
       border: 1px solid #006400;
     }
 }
+
+.inputArea.login {
+    gap: 25px;
+}
