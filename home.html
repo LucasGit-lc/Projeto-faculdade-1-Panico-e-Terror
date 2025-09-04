@@ -1,24 +1,191 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="src/css/style.css">
-    <link rel="stylesheet" href="src/css/reset.css">
-    <title>Página Principal</title>
-  </head>
-  <body>
-      <div class="container">
-        <h2>Bem-vindo!</h2>
-        <div class="content-area">
-          <p>Você está logado com sucesso na plataforma Pânico e Terror.</p>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panico e Terror - Moda Esportiva</title>
+    <link rel="stylesheet" href="home.css">
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Panico<span>Terror</span></div>
+                <nav>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Produtos</a></li>
+                        <li><a href="#">Categorias</a></li>
+                        <li><a href="#">Ofertas</a></li>
+                        <li><a href="#">Contato</a></li>
+                        
+
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <div class="search-bar">
+                        <input type="text" placeholder="Buscar produtos...">
+                    </div>
+
+                    <a class="logar" href="#">Login</a>
+                    <a class="cadastro" href="#">Cadastre-se</a>
+
+                </div>
+            </div>
         </div>
-      </div>
-  </body>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>ELEVE SEU ESTILO ESPORTIVO</h1>
+                <p>Descubra a mais nova coleção de moda esportiva com design inovador e tecnologia de ponta para maximizar seu desempenho</p>
+                <button class="cta-btn">Ver Coleção</button>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="products-section">
+        <div class="container">
+            <h2 class="section-title">Destaques</h2>
+            <div class="products-grid">
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d24f59c9-440f-408d-824e-5d944f23930f.png" alt="Tênis de corrida de alto desempenho com solado vermelho e detalhes em preto">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Tênis</div>
+                        <h3 class="product-title">Tênis Run Pro Max</h3>
+                        <div class="product-price">R$ 299,90</div>
+                        <button class="add-to-cart">Adicionar ao Carrinho</button>
+                    </div>
+                </div>
+
+            
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c659cb72-5e97-4266-8ba8-ce3decd4bb6d.png" alt="Camiseta esportiva de compressão preta com detalhes vermelhos e tecnologia dry-fit">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Camisetas</div>
+                        <h3 class="product-title">Camiseta Performance</h3>
+                        <div class="product-price">R$ 89,90</div>
+                        <button class="add-to-cart">Adicionar ao Carrinho</button>
+                    </div>
+                </div>
+
+            
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e08bd690-309b-4d21-ba63-d20697047285.png" alt="Shorts esportivo preto com listras vermelhas laterais e bolso para celular">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Shorts</div>
+                        <h3 class="product-title">Shorts Training Pro</h3>
+                        <div class="product-price">R$ 119,90</div>
+                        <button class="add-to-cart">Adicionar ao Carrinho</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/57030cb7-181c-4f32-8925-df8fa6886bd1.png" alt="Jaqueta esportiva corta-vento vermelha com capuz e detalhes reflexivos">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Jaquetas</div>
+                        <h3 class="product-title">Jaqueta Windbreaker</h3>
+                        <div class="product-price">R$ 199,90</div>
+                        <button class="add-to-cart">Adicionar ao Carrinho</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="categories-section">
+        <div class="container">
+            <h2 class="section-title">Categorias</h2>
+            <div class="categories-grid">
+                <div class="category-card">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/9af75f94-422b-4e4a-a67a-f5a36f70fea8.png" alt="Coleção de tênis esportivos modernos em diversas cores e modelos">
+                    <div class="category-overlay">
+                        <h3 class="category-title">Tênis</h3>
+                    </div>
+                </div>
+
+                <div class="category-card">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8553a684-3053-4adb-9a0d-efb71b9e18ae.png" alt="Roupas de treino com tecnologia avançada para máximo conforto">
+                    <div class="category-overlay">
+                        <h3 class="category-title">Roupas</h3>
+                    </div>
+                </div>
+
+                <div class="category-card">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/911a68bf-0c59-4750-a8ae-c768fb8c1f22.png" alt="Acessórios esportivos incluindo mochilas, garrafas e equipamentos">
+                    <div class="category-overlay">
+                        <h3 class="category-title">Acessórios</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>panicoeterror</h3>
+                    <p>Sua loja especializada em moda esportiva de alta qualidade com os melhores preços do mercado.</p>
+                    <div class="social-links">
+                        <a href="#">FB</a>
+                        <a href="#">IG</a>
+                        <a href="#">TW</a>
+                        <a href="#">YT</a>
+                    </div>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Produtos</h3>
+                    <ul>
+                        <li><a href="#">Tênis</a></li>
+                        <li><a href="#">Camisetas</a></li>
+                        <li><a href="#">Shorts</a></li>
+                        <li><a href="#">Jaquetas</a></li>
+                        <li><a href="#">Acessórios</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Trocas e Devoluções</a></li>
+                        <li><a href="#">Entregas</a></li>
+                        <li><a href="#">Prazos de Entrega</a></li>
+                        <li><a href="#">Formas de Pagamento</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li>Email: contato@panicoeterror.com</li>
+                        <li>Telefone: (61) 9999-9999</li>
+                        <li>Endereço: </li>
+                        <li>Brasilia- DF</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="copyright">
+                <p>© 2025 Panico e Terror. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+</body>
 </html>
