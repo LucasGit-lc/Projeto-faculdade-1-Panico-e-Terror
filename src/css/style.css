@@ -4,7 +4,7 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 650px;
-    background-color: #f0f0f0;
+    background: linear-gradient(135deg, #000000 0%, #8B0000 100%);
 }
 
 .container {
