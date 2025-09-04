@@ -9,9 +9,7 @@ Carlos Daniel da Silva Vieira = Desenvolvedor <br>
 Luan de Moura Santos = Analista de Requisitos / Scrum Master <br>
 Samuel Vieira de Souza = Desenvolvedor
 
-cronograma e kanban:
-https://ads608615.monday.com/boards/9875099783/views/209743404
+kanban e backlog:
+https://ads608615.monday.com/boards/9957439002/views/211390358
 <br>
-backlog do artefato: https://miro.com/app/board/uXjVJPSdSz4=/
-<br>
-backlog: https://miro.com/app/board/uXjVJPVSn_0=/
+
