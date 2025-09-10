@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho de Compras - Panico e Terror</title>
+    <link rel="icon" type="image/png" href="/LogoMarca - Git.jpg">
+    <link rel="stylesheet" href="./src/css/home.css">
+    <link rel="stylesheet" href="./src/css/carrinho.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Panico<span>Terror</span></div>
+                <nav>
+                    <ul>
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="produtos.html">Produtos</a></li>
+                        <li><a href="#">Categorias</a></li>
+                        <li><a href="#">Ofertas</a></li>
+                        <li><a href="#">Contato</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <a class="logar" href="login.html">Login</a>
+                    <a class="cadastro" href="./index.html">Cadastre-se</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="cart-container">
+        <div class="cart-header">
+            <h1>Carrinho de Compras</h1>
+            <p>Revise seus itens antes de finalizar a compra</p>
+        </div>
+
+        <div id="emptyCart" class="empty-cart" style="display: none;">
+            <div class="empty-cart-icon">🛒</div>
+            <h2>Seu carrinho está vazio</h2>
+            <p>Adicione alguns produtos incríveis para começar suas compras!</p>
+            <a href="produtos.html" class="shop-now-btn">Começar a Comprar</a>
+        </div>
+
+        <div id="cartContent" class="cart-content">
+            <div class="cart-items">
+                <div id="cartItemsList"></div>
+            </div>
+
+            <div class="cart-summary">
+                <h3 class="summary-title">Resumo do Pedido</h3>
+                
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotalValue">R$ 0,00</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span>Frete:</span>
+                    <span id="shippingValue">Grátis</span>
+                </div>
+                
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span id="totalValue">R$ 0,00</span>
+                </div>
+                
+                <button class="checkout-btn" id="checkoutBtn" onclick="finalizarCompra()">
+                    Finalizar Compra
+                </button>
+                
+                <button class="continue-shopping" onclick="window.location.href='produtos.html'">
+                    Continuar Comprando
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./src/js/carrinho.js"></script>
+</body>
+</html>

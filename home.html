@@ -15,23 +15,20 @@
                 <div class="logo">Panico<span>Terror</span></div>
                 <nav>
                     <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Produtos</a></li>
+                        <li><a href="home.html" class="active">Home</a></li>
+                        <li><a href="produtos.html">Produtos</a></li>
                         <li><a href="#">Categorias</a></li>
                         <li><a href="#">Ofertas</a></li>
                         <li><a href="#">Contato</a></li>
-                        
-
                     </ul>
                 </nav>
                 <div class="header-actions">
                     <div class="search-bar">
                         <input type="text" placeholder="Buscar produtos...">
                     </div>
-
+                    <a href="carrinho.html" class="cart-link" style="color: #e74c3c; text-decoration: none; margin-right: 15px; font-size: 20px;">🛒</a>
                     <a class="logar" href="login.html">Login</a>
                     <a class="cadastro" href="./index.html">Cadastre-se</a>
-
                 </div>
             </div>
         </div>
@@ -61,7 +58,7 @@
                         <div class="product-category">Tênis</div>
                         <h3 class="product-title">Tênis Run Pro Max</h3>
                         <div class="product-price">R$ 299,90</div>
-                        <button class="add-to-cart">Adicionar ao Carrinho</button>
+                        <button class="add-to-cart" onclick="adicionarAoCarrinhoHome(1)">Adicionar ao Carrinho</button>
                     </div>
                 </div>
 
@@ -74,7 +71,7 @@
                         <div class="product-category">Camisetas</div>
                         <h3 class="product-title">Camiseta Performance</h3>
                         <div class="product-price">R$ 89,90</div>
-                        <button class="add-to-cart">Adicionar ao Carrinho</button>
+                        <button class="add-to-cart" onclick="adicionarAoCarrinhoHome(2)">Adicionar ao Carrinho</button>
                     </div>
                 </div>
 
@@ -87,7 +84,7 @@
                         <div class="product-category">Shorts</div>
                         <h3 class="product-title">Shorts Training Pro</h3>
                         <div class="product-price">R$ 119,90</div>
-                        <button class="add-to-cart">Adicionar ao Carrinho</button>
+                        <button class="add-to-cart" onclick="adicionarAoCarrinhoHome(3)">Adicionar ao Carrinho</button>
                     </div>
                 </div>
 
@@ -99,7 +96,7 @@
                         <div class="product-category">Jaquetas</div>
                         <h3 class="product-title">Jaqueta Windbreaker</h3>
                         <div class="product-price">R$ 199,90</div>
-                        <button class="add-to-cart">Adicionar ao Carrinho</button>
+                        <button class="add-to-cart" onclick="adicionarAoCarrinhoHome(4)">Adicionar ao Carrinho</button>
                     </div>
                 </div>
             </div>
@@ -188,5 +185,6 @@
             </div>
         </div>
     </footer>
+    <script src="./src/js/home.js"></script>
 </body>
 </html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Produtos - Panico e Terror</title>
+    <link rel="icon" type="image/png" href="/LogoMarca - Git.jpg">
+    <link rel="stylesheet" href="./src/css/home.css">
+    <link rel="stylesheet" href="./src/css/produtos.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Panico<span>Terror</span></div>
+                <nav>
+                    <ul>
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="produtos.html" class="active">Produtos</a></li>
+                        <li><a href="#">Categorias</a></li>
+                        <li><a href="#">Ofertas</a></li>
+                        <li><a href="#">Contato</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <a class="logar" href="login.html">Login</a>
+                    <a class="cadastro" href="./index.html">Cadastre-se</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <button class="cart-icon" onclick="window.location.href='carrinho.html'">
+        🛒
+        <span class="cart-count" id="cartCount">0</span>
+    </button>
+
+    <div class="catalog-container">
+        <div class="catalog-header">
+            <h1>Catálogo de Produtos</h1>
+            <p>Encontre os melhores produtos esportivos para elevar seu desempenho</p>
+        </div>
+
+        <div class="filters-section">
+            <div class="filter-group">
+                <label for="searchInput">Buscar:</label>
+                <input type="text" id="searchInput" class="search-input" placeholder="Digite o nome do produto...">
+            </div>
+            
+            <div class="filter-group">
+                <label for="categoryFilter">Categoria:</label>
+                <select id="categoryFilter">
+                    <option value="">Todas as categorias</option>
+                    <option value="Tênis">Tênis</option>
+                    <option value="Camisetas">Camisetas</option>
+                    <option value="Shorts">Shorts</option>
+                    <option value="Jaquetas">Jaquetas</option>
+                </select>
+            </div>
+            
+            <button class="clear-filters" onclick="clearFilters()">Limpar Filtros</button>
+        </div>
+
+        <div id="loadingMessage" class="loading">Carregando produtos...</div>
+        <div id="noProductsMessage" class="no-products" style="display: none;">Nenhum produto encontrado.</div>
+        
+        <div id="productsGrid" class="products-grid"></div>
+    </div>
+
+    <script src="./src/js/produtos.js"></script>
+</body>
+</html>
