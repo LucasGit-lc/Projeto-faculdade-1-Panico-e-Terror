@@ -75,7 +75,7 @@ async function inserirProdutosIniciais() {
         categoria: 'Tênis',
         preco: 299.90,
         descricao: 'Tênis de corrida de alto desempenho com solado vermelho e detalhes em preto',
-        imagem_url: 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d24f59c9-440f-408d-824e-5d944f23930f.png'
+        imagem_url: 'https://lojasdufins.com.br/cdn/shop/files/10_1_1_800x.webp?v=1745261891'
       },
       {
         nome: 'Camiseta Performance',
