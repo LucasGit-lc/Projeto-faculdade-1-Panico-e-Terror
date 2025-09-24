@@ -135,7 +135,83 @@ app.post('/cadastro', async (req, res) => {
       'INSERT INTO usuarios (nome, email, senha) VALUES ($1, $2, $3)',
       [nome, email, senhaCriptografada]
     );
-    res.send('Cadastro realizado com sucesso!');
+    res.send(`
+      <!DOCTYPE html>
+      <html lang="pt-BR">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cadastro Realizado</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+          }
+          .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+          }
+          .sucesso {
+            color: #28a745;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+          }
+          .contador {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 20px;
+          }
+          .loading {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+          }
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="sucesso">✅ Cadastro realizado com sucesso!</div>
+          <div class="contador">Redirecionando para o login em <span id="tempo">3</span> segundos...</div>
+          <div class="loading"></div>
+        </div>
+        
+        <script>
+          let tempo = 3;
+          const contadorElement = document.getElementById('tempo');
+          
+          const interval = setInterval(() => {
+            tempo--;
+            contadorElement.textContent = tempo;
+            
+            if (tempo <= 0) {
+              clearInterval(interval);
+              window.location.href = '/login.html';
+            }
+          }, 1000);
+        </script>
+      </body>
+      </html>
+    `);
   } catch (err) {
     if (err.code === '23505') { 
       res.status(400).send('Email já cadastrado!');
