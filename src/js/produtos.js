@@ -84,6 +84,14 @@ function getProdutosMockados() {
             preco: 199.90,
             descricao: 'Jaqueta esportiva corta-vento vermelha com capuz e detalhes reflexivos',
             imagem_url: 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/57030cb7-181c-4f32-8925-df8fa6886bd1.png'
+        },
+        {
+            id: 5,
+            nome: 'Tênis Sport Elite',
+            categoria: 'Tênis',
+            preco: 349.90,
+            descricao: 'Tênis esportivo de alta performance com design moderno e tecnologia avançada de amortecimento',
+            imagem_url: 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQuJWMGP7TYZYYPlfe5GMxg-rsW4Z0fEShxB8UIycFlk-zGsWBtFqovLojSBAo4-tcLxxrmzBGGq7kMRGmKKlvJkgLsuFQl0DHaVLL0mkgKRJde0QYPlujVV70'
         }
     ];
 }
