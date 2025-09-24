@@ -91,7 +91,7 @@ function getProdutosMockados() {
             categoria: 'Tênis',
             preco: 349.90,
             descricao: 'Tênis esportivo de alta performance com design moderno e tecnologia avançada de amortecimento',
-            imagem_url: 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQuJWMGP7TYZYYPlfe5GMxg-rsW4Z0fEShxB8UIycFlk-zGsWBtFqovLojSBAo4-tcLxxrmzBGGq7kMRGmKKlvJkgLsuFQl0DHaVLL0mkgKRJde0QYPlujVV70'
+            imagem_url: 'https://olimpofit.com.br/cdn/shop/files/S927a584fe12544c9aa9b647a9df3c16bX_1024x1024@2x.webp?v=1719777153'
         }
     ];
 }
