@@ -12,21 +12,21 @@ const produtosHome = {
         nome: 'Camiseta Performance',
         categoria: 'Camisetas',
         preco: 89.90,
-        imagem_url: 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c659cb72-5e97-4266-8ba8-ce3decd4bb6d.png'
+        imagem_url: 'https://www.dominusfitness.com.br/cdn/shop/files/camisa_de_compress_o_masclina.webp?v=1757830123'
     },
     3: {
         id: 3,
         nome: 'Shorts Training Pro',
         categoria: 'Shorts',
         preco: 119.90,
-        imagem_url: 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e08bd690-309b-4d21-ba63-d20697047285.png'
+        imagem_url: 'https://static.netshoes.com.br/produtos/bermuda-adidas-3s-masculina/02/2FW-5549-002/2FW-5549-002_zoom1.jpg?ts=1695423672'
     },
     4: {
         id: 4,
         nome: 'Jaqueta Windbreaker',
         categoria: 'Jaquetas',
         preco: 199.90,
-        imagem_url: 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/57030cb7-181c-4f32-8925-df8fa6886bd1.png'
+        imagem_url: 'https://http2.mlstatic.com/D_NQ_NP_356611-MLB20597628199_022016-O.webp'
     }
 };
 
