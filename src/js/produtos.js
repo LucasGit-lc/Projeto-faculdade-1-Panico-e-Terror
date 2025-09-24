@@ -58,7 +58,7 @@ function getProdutosMockados() {
             nome: 'Tênis Run Pro Max',
             categoria: 'Tênis',
             preco: 299.90,
-            descricao: 'Tênis de corrida de alto desempenho com solado vermelho e detalhes em preto',
+            descricao: 'Tênis esportivo verde com detalhes em castanho e branco, design moderno e tecnologia de amortecimento avançada',
             imagem_url: 'https://lojasdufins.com.br/cdn/shop/files/10_1_1_800x.webp?v=1745261891'
         },
         {
