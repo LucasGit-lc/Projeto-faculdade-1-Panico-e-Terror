@@ -18,6 +18,9 @@ app.use(cors({
 
 app.use(express.json());
 
+// Servir arquivos estáticos
+app.use(express.static('.'));
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
