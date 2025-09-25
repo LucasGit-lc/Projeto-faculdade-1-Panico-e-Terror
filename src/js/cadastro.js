@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     formData.append("email", email);
     formData.append("senha", senha);
 
-    fetch("https://projeto-faculdade-1-panico-e-terror-production.up.railway.app/cadastro", {
+    fetch("https://miraculous-enchantment-production.up.railway.app/cadastro", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
