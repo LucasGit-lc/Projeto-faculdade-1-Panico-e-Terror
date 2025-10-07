@@ -38,7 +38,10 @@ function adicionarAoCarrinhoHome(produtoId) {
         return;
     }
     
-    let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+    const CART_KEY = (window.Sessao && typeof window.Sessao.getCartKey === 'function')
+      ? window.Sessao.getCartKey()
+      : 'carrinho';
+    let carrinho = JSON.parse(localStorage.getItem(CART_KEY)) || [];
     
     // Verificar se o produto já está no carrinho
     const itemExistente = carrinho.find(item => item.id === produtoId);
@@ -56,8 +59,8 @@ function adicionarAoCarrinhoHome(produtoId) {
         });
     }
     
-    // Salvar no localStorage
-    localStorage.setItem('carrinho', JSON.stringify(carrinho));
+    // Salvar no localStorage por usuário
+    localStorage.setItem(CART_KEY, JSON.stringify(carrinho));
     
     // Feedback visual
     mostrarNotificacao(`${produto.nome} adicionado ao carrinho!`);

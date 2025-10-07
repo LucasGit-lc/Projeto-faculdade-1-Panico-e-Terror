@@ -1,9 +1,14 @@
 // Configuração da API
 const API_BASE_URL = 'https://your-api-url.com'; // Substitua pela URL do seu servidor
 
+// Chave do carrinho por usuário
+const CART_KEY = (window.Sessao && typeof window.Sessao.getCartKey === 'function')
+  ? window.Sessao.getCartKey()
+  : 'carrinho';
+
 // Variáveis globais
 let produtos = [];
-let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+let carrinho = JSON.parse(localStorage.getItem(CART_KEY)) || [];
 
 // Elementos do DOM
 const productsGrid = document.getElementById('productsGrid');
@@ -173,8 +178,8 @@ function adicionarAoCarrinho(produtoId) {
         });
     }
     
-    // Salvar no localStorage
-    localStorage.setItem('carrinho', JSON.stringify(carrinho));
+    // Salvar no localStorage por usuário
+    localStorage.setItem(CART_KEY, JSON.stringify(carrinho));
     
     // Atualizar contador do carrinho
     atualizarContadorCarrinho();
@@ -249,3 +254,12 @@ function mostrarNotificacao(mensagem) {
         notificacao.remove();
     }, 3000);
 }
+
+// Sincronizar quando houver atualização do carrinho
+window.addEventListener('carrinhoAtualizado', function() {
+  const key = (window.Sessao && typeof window.Sessao.getCartKey === 'function')
+    ? window.Sessao.getCartKey()
+    : CART_KEY;
+  carrinho = JSON.parse(localStorage.getItem(key)) || [];
+  atualizarContadorCarrinho();
+});

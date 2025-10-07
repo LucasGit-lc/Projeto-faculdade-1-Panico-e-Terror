@@ -1,5 +1,8 @@
 // Variáveis globais
-let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+const CART_KEY = (window.Sessao && typeof window.Sessao.getCartKey === 'function')
+  ? window.Sessao.getCartKey()
+  : 'carrinho';
+let carrinho = JSON.parse(localStorage.getItem(CART_KEY)) || [];
 
 // Elementos do DOM
 const cartContent = document.getElementById('cartContent');
@@ -140,7 +143,7 @@ function atualizarResumo() {
 
 // Função para salvar carrinho no localStorage
 function salvarCarrinho() {
-    localStorage.setItem('carrinho', JSON.stringify(carrinho));
+    localStorage.setItem(CART_KEY, JSON.stringify(carrinho));
     
     // Atualizar contador do carrinho em outras páginas
     window.dispatchEvent(new Event('carrinhoAtualizado'));
@@ -274,6 +277,9 @@ document.addEventListener('keydown', function(e) {
 
 // Listener para atualização do carrinho
 window.addEventListener('carrinhoAtualizado', function() {
-    carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+    const key = (window.Sessao && typeof window.Sessao.getCartKey === 'function')
+      ? window.Sessao.getCartKey()
+      : 'carrinho';
+    carrinho = JSON.parse(localStorage.getItem(key)) || [];
     exibirCarrinho();
 });

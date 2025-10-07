@@ -2,10 +2,31 @@
 // Salvar, carregar e limpar sessão do usuário usando localStorage
 
 const SESSAO_CHAVE = 'usuarioLogado';
+const CARRINHO_GLOBAL_CHAVE = 'carrinho';
+
+// Retorna a chave de carrinho específica do usuário logado
+function getCartKey() {
+  const usuario = obterSessao();
+  if (usuario && usuario.email) {
+    return `carrinho_${usuario.email}`;
+  }
+  return CARRINHO_GLOBAL_CHAVE;
+}
 
 function salvarSessao(usuario) {
   if (!usuario || !usuario.email) return;
   localStorage.setItem(SESSAO_CHAVE, JSON.stringify(usuario));
+
+  // Migrar carrinho global para carrinho do usuário ao logar
+  try {
+    const globalCart = localStorage.getItem(CARRINHO_GLOBAL_CHAVE);
+    if (globalCart) {
+      localStorage.setItem(getCartKey(), globalCart);
+      localStorage.removeItem(CARRINHO_GLOBAL_CHAVE);
+      // Disparar evento para atualizar contadores/listas
+      window.dispatchEvent(new Event('carrinhoAtualizado'));
+    }
+  } catch {}
 }
 
 function obterSessao() {
@@ -72,4 +93,4 @@ function atualizarUIUsuarioLogado() {
 document.addEventListener('DOMContentLoaded', atualizarUIUsuarioLogado);
 
 // Disponibilizar helpers globalmente
-window.Sessao = { salvarSessao, obterSessao, limparSessao, atualizarUIUsuarioLogado };
+window.Sessao = { salvarSessao, obterSessao, limparSessao, atualizarUIUsuarioLogado, getCartKey };
