@@ -19,14 +19,27 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       body: formData,
     })
-      .then((response) => {
+      .then(async (response) => {
         if (response.ok) {
+          // Expect JSON com dados do usuário
+          const usuario = await response.json();
+          try {
+            // Salvar sessão no localStorage
+            if (window.Sessao && typeof window.Sessao.salvarSessao === 'function') {
+              window.Sessao.salvarSessao(usuario);
+            } else {
+              localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
+            }
+          } catch (e) {
+            console.warn('Falha ao salvar sessão:', e);
+          }
+
           mensagemDiv.textContent = "Login realizado com sucesso!";
           mensagemDiv.className = "mensagem sucesso";
 
           setTimeout(() => {
             window.location.href = "home.html";
-          }, 1000);
+          }, 800);
         } else {
           return response.text().then((texto) => {
             mensagemDiv.textContent = texto || "Erro ao fazer login";

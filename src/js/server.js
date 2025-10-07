@@ -10,7 +10,9 @@ app.use(cors({
     'https://lucasgit-lc.github.io',
     'https://lucasgit-lc.github.io/Projeto-faculdade-1-Panico-e-Terror',
     'http://localhost:5500',
-    'http://127.0.0.1:5500'
+    'http://127.0.0.1:5500',
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
@@ -21,18 +23,35 @@ app.use(express.json());
 // Servir arquivos estáticos
 app.use(express.static('.'));
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
+// Configuração de conexão com o banco: SSL apenas em produção/ambiente que exige
+const enableSSL = (process.env.ENABLE_DB_SSL === 'true') || (process.env.NODE_ENV === 'production');
+const databaseUrl = process.env.DATABASE_URL;
+let pool = null;
+if (databaseUrl && typeof databaseUrl === 'string' && databaseUrl.trim() !== '') {
+  pool = new Pool({
+    connectionString: databaseUrl,
+    ssl: enableSSL ? { rejectUnauthorized: false } : false,
+  });
+} else {
+  console.warn('DATABASE_URL não definido. Banco de dados desativado para este ambiente.');
+}
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Função para criar tabelas
 async function criarTabelas() {
   try {
+    // Criar tabela usuarios
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS usuarios (
+        id SERIAL PRIMARY KEY,
+        nome VARCHAR(255) NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        senha VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
     // Criar tabela produtos
     await pool.query(`
       CREATE TABLE IF NOT EXISTS produtos (
@@ -125,9 +144,13 @@ async function inserirProdutosIniciais() {
 }
 
 // Inicializar banco de dados
-criarTabelas().then(() => {
-  inserirProdutosIniciais();
-});
+if (pool) {
+  criarTabelas().then(() => {
+    inserirProdutosIniciais();
+  });
+} else {
+  console.warn('Banco desativado; pulando criação de tabelas e inserção de produtos iniciais.');
+}
 
 app.post('/cadastro', async (req, res) => {
   const { nome, email, senha } = req.body;
@@ -141,6 +164,9 @@ app.post('/cadastro', async (req, res) => {
     return res.status(400).send('Senha muito curta!');
   }
   try {
+    if (!pool) {
+      return res.status(503).send('Banco de dados não configurado. Defina a variável DATABASE_URL.');
+    }
     const senhaCriptografada = await bcrypt.hash(senha, 10);
     await pool.query(
       'INSERT INTO usuarios (nome, email, senha) VALUES ($1, $2, $3)',
@@ -173,6 +199,9 @@ app.post('/login', async (req, res) => {
   }
   
   try {
+    if (!pool) {
+      return res.status(503).send('Banco de dados não configurado. Defina a variável DATABASE_URL.');
+    }
     const resultado = await pool.query('SELECT * FROM usuarios WHERE email = $1', [email]);
     
     if (resultado.rows.length === 0) {
@@ -187,7 +216,12 @@ app.post('/login', async (req, res) => {
       return res.status(401).send('Email ou senha incorretos!');
     }
     
-    res.status(200).send('Login realizado com sucesso!');
+    // Retornar dados básicos do usuário para persistência de sessão no frontend
+    res.status(200).json({
+      id: usuario.id,
+      nome: usuario.nome,
+      email: usuario.email
+    });
 
   } catch (err) {
     console.error(err);
@@ -198,6 +232,9 @@ app.post('/login', async (req, res) => {
 // Endpoints para produtos
 app.get('/produtos', async (req, res) => {
   try {
+    if (!pool) {
+      return res.status(503).json({ erro: 'Banco de dados não configurado. Defina a variável DATABASE_URL.' });
+    }
     const { categoria, busca } = req.query;
     let query = 'SELECT * FROM produtos';
     let params = [];
