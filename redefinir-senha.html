@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="src/css/style.css">
+    <link rel="stylesheet" href="src/css/reset.css">
+    <title>Redefinir Senha</title>
+  </head>
+  <body>
+      <div class="container">
+        <h2>Redefinir Senha</h2>
+        
+        <div id="mensagem" class="mensagem"></div>
+
+        <form id="redefinirSenhaForm">
+          <section class="inputArea login"> 
+            <input type="hidden" id="token" name="token">
+            <input type="hidden" id="email" name="email">
+            
+            <p>Nova Senha</p>
+            <input class="inputBox" type="password" name="senha" required minlength="6" />
+            
+            <p>Confirmar Nova Senha</p>
+            <input class="inputBox" type="password" name="confirmarSenha" required minlength="6" />
+            
+            <p class="info-text">A senha deve ter pelo menos 6 caracteres.</p>
+
+            <button type="submit">Redefinir Senha</button>
+            
+            <div class="links-container" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+              <a href="./login.html">Voltar para o login</a>
+            </div>
+          </section>
+        </form>
+      </div>
+
+    <script src="src/js/sessao.js"></script>
+    <script src="src/js/redefinir-senha.js"></script>
+  </body>
+</html>

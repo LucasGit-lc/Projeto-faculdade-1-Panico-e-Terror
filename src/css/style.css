@@ -13,7 +13,7 @@ body {
     stroke: rgba(0, 0, 0, 0.15);
     border-radius: 11px;
     width: 603px;
-    height: 520px;
+    height: 20%;
     padding-left: 57px;
     padding-top: 31px;
     flex-shrink: 0;
@@ -96,7 +96,7 @@ body {
     color: #B32E25;
     text-decoration: underline;
     transition: all 0.3s ease;
-    text-align: center;
+    text-align: left;
     }
 
     .mensagem {

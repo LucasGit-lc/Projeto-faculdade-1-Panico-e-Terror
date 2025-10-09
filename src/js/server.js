@@ -377,6 +377,82 @@ app.delete('/carrinho/:id', async (req, res) => {
   }
 });
 
+// Rota para recuperação de senha
+app.post('/recuperar-senha', async (req, res) => {
+  const { email } = req.body;
+  
+  if (!email || !email.includes('@')) {
+    return res.status(400).send('Email inválido!');
+  }
+  
+  try {
+    if (!pool) {
+      return res.status(503).send('Banco de dados não configurado. Defina a variável DATABASE_URL.');
+    }
+    
+    // Verificar se o email existe
+    const resultado = await pool.query('SELECT * FROM usuarios WHERE email = $1', [email]);
+    
+    if (resultado.rows.length === 0) {
+      // Por segurança, não informamos que o email não existe
+      return res.status(200).send('Se o email estiver cadastrado, você receberá instruções para redefinir sua senha.');
+    }
+    
+    // Gerar token único (em produção, seria armazenado no banco com expiração)
+    const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    
+    // Em um ambiente real, enviaríamos um email com o link para redefinir a senha
+    // Aqui apenas retornamos sucesso para simulação
+    
+    res.status(200).send('Instruções de recuperação enviadas para seu email.');
+    
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erro ao processar solicitação de recuperação de senha');
+  }
+});
+
+// Rota para redefinir senha
+app.post('/redefinir-senha', async (req, res) => {
+  const { email, token, novaSenha } = req.body;
+  
+  if (!email || !token || !novaSenha) {
+    return res.status(400).send('Todos os campos são obrigatórios!');
+  }
+  
+  if (novaSenha.length < 6) {
+    return res.status(400).send('A senha deve ter pelo menos 6 caracteres!');
+  }
+  
+  try {
+    if (!pool) {
+      return res.status(503).send('Banco de dados não configurado. Defina a variável DATABASE_URL.');
+    }
+    
+    // Em um ambiente real, verificaríamos se o token é válido e não expirou
+    // Aqui, para demonstração, apenas verificamos se o email existe
+    
+    const resultado = await pool.query('SELECT * FROM usuarios WHERE email = $1', [email]);
+    
+    if (resultado.rows.length === 0) {
+      return res.status(400).send('Link inválido ou expirado!');
+    }
+    
+    // Atualizar a senha
+    const senhaCriptografada = await bcrypt.hash(novaSenha, 10);
+    await pool.query(
+      'UPDATE usuarios SET senha = $1 WHERE email = $2',
+      [senhaCriptografada, email]
+    );
+    
+    res.status(200).send('Senha redefinida com sucesso!');
+    
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erro ao redefinir senha');
+  }
+});
+
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Servidor rodando na porta ${process.env.PORT || 3000}`);
 });

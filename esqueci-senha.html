@@ -11,36 +11,30 @@
     />
     <link rel="stylesheet" href="src/css/style.css">
     <link rel="stylesheet" href="src/css/reset.css">
-    <title>Login</title>
+    <title>Recuperar Senha</title>
   </head>
   <body>
       <div class="container">
-        <h2>Login</h2>
+        <h2>Recuperar Senha</h2>
         
         <div id="mensagem" class="mensagem"></div>
 
-        <form>
+        <form id="recuperarSenhaForm">
           <section class="inputArea login"> 
             <p>Email</p>
-              <input class="inputBox" type="email" name="email" required />
+            <input class="inputBox" type="email" name="email" required />
+            <p class="info-text">Digite seu email cadastrado para receber um link de recuperação de senha.</p>
 
-            <p>Senha</p>
-              <input class="inputBox" type="password" name="senha" required />
-              
+            <button type="submit">Enviar Link</button>
             
-
-            <button type="submit">Entrar</button>
-            
-            <a href="./esqueci-senha.html" style="color: #B32E25; text-decoration: underline; height: 20px;">Esqueci minha senha</a>
-
-            <div class="links-container" style="display: flex; flex-direction: column; ">
-              <a href="./index.html" style="color: #B32E25; text-decoration: underline;">Não tem uma conta? Cadastre-se</a>
+            <div class="links-container" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+              <a href="./login.html">Voltar para o login</a>
             </div>
           </section>
         </form>
       </div>
 
     <script src="src/js/sessao.js"></script>
-    <script src="src/js/login.js"></script>
+    <script src="src/js/esqueci-senha.js"></script>
   </body>
 </html>
