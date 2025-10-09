@@ -4,7 +4,11 @@ const { Pool } = require('pg');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
-require('dotenv').config();
+try {
+  require('dotenv').config();
+} catch (error) {
+  console.log('Arquivo .env não encontrado, usando variáveis de ambiente do sistema');
+}
 
 const app = express();
 app.use(cors({
