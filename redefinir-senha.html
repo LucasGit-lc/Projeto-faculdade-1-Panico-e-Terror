@@ -15,9 +15,14 @@
   </head>
   <body>
       <div class="container">
-        <h2>Redefinir Senha</h2>
-        
-        <div id="mensagem" class="mensagem"></div>
+        <div class="logo">
+            <img src="src/img/logo.png" alt="Logo Pânico e Terror">
+        </div>
+        <div class="inputArea">
+            <h2>Redefinir Senha</h2>
+            <p>Digite sua nova senha abaixo</p>
+            
+            <div id="mensagem" class="mensagem"></div>
 
         <form id="redefinirSenhaForm">
           <section class="inputArea login"> 
@@ -43,5 +48,78 @@
 
     <script src="src/js/sessao.js"></script>
     <script src="src/js/redefinir-senha.js"></script>
+      
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Obter parâmetros da URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+            const email = urlParams.get('email');
+            
+            // Preencher campos ocultos
+            document.getElementById('token').value = token || '';
+            document.getElementById('email').value = email || '';
+            
+            if (!token || !email) {
+                document.getElementById('mensagem').innerHTML = 'Link inválido. Por favor, solicite um novo link de redefinição.';
+                document.getElementById('redefinirSenhaForm').style.display = 'none';
+                return;
+            }
+            
+            document.getElementById('redefinirSenhaForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const form = e.target;
+                const senha = form.senha.value;
+                const confirmarSenha = form.confirmarSenha.value;
+                const mensagemElement = document.getElementById('mensagem');
+                
+                // Validar senha
+                if (senha.length < 6) {
+                    mensagemElement.innerHTML = 'A senha deve ter pelo menos 6 caracteres.';
+                    mensagemElement.style.color = 'red';
+                    return;
+                }
+                
+                if (senha !== confirmarSenha) {
+                    mensagemElement.innerHTML = 'As senhas não coincidem.';
+                    mensagemElement.style.color = 'red';
+                    return;
+                }
+                
+                try {
+                    const response = await fetch('/redefinir-senha', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            email: email,
+                            token: token,
+                            novaSenha: senha
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        mensagemElement.innerHTML = 'Senha redefinida com sucesso! Redirecionando para o login...';
+                        mensagemElement.style.color = 'green';
+                        
+                        // Redirecionar para a página de login após 3 segundos
+                        setTimeout(function() {
+                            window.location.href = 'login.html';
+                        }, 3000);
+                    } else {
+                        const data = await response.json();
+                        mensagemElement.innerHTML = data.erro || 'Erro ao redefinir senha.';
+                        mensagemElement.style.color = 'red';
+                    }
+                } catch (error) {
+                    console.error('Erro:', error);
+                    mensagemElement.innerHTML = 'Erro ao conectar com o servidor.';
+                    mensagemElement.style.color = 'red';
+                }
+            });
+        });
+      </script>
   </body>
 </html>
