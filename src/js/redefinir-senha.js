@@ -1,6 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Base dinâmica: se estiver em servidor estático local (porta != 3000), aponta para API em 3000; caso contrário usa mesma origem
+  // Base dinâmica: lê meta[name="api-base"] em produção; no dev estático local (porta != 3000) usa http://localhost:3000; caso contrário, mesma origem
   const API_BASE = (() => {
+    const metaApi = document.querySelector('meta[name="api-base"]');
+    const configured = metaApi?.content?.trim();
+    if (configured) return configured;
     const host = location.hostname;
     const port = location.port;
     const isLocalHost = host === 'localhost' || host === '127.0.0.1';
