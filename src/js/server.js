@@ -43,11 +43,11 @@ app.get(['/','/health'], (req, res) => {
 
 // Rota temporária para migrar tabela usuarios (adicionar colunas reset_token)
 app.get('/migrate-usuarios', async (req, res) => {
-  if (!pool) {
-    return res.status(500).json({ error: 'Banco de dados não configurado' });
-  }
-  
   try {
+    if (!pool) {
+      return res.status(503).json({ erro: 'Banco de dados não configurado' });
+    }
+
     // Verificar se as colunas já existem
     const checkColumns = await pool.query(`
       SELECT column_name 
@@ -55,21 +55,51 @@ app.get('/migrate-usuarios', async (req, res) => {
       WHERE table_name = 'usuarios' 
       AND column_name IN ('reset_token', 'reset_token_expiry')
     `);
+
+    const existingColumns = checkColumns.rows.map(row => row.column_name);
+    let addedColumns = [];
     
-    if (checkColumns.rows.length === 0) {
-      // Adicionar as colunas se não existirem
-      await pool.query(`
-        ALTER TABLE usuarios 
-        ADD COLUMN IF NOT EXISTS reset_token VARCHAR(100),
-        ADD COLUMN IF NOT EXISTS reset_token_expiry TIMESTAMP
-      `);
-      res.json({ success: true, message: 'Colunas reset_token adicionadas com sucesso!' });
-    } else {
-      res.json({ success: true, message: 'Colunas reset_token já existem' });
+    // Adicionar colunas se não existirem
+    if (!existingColumns.includes('reset_token')) {
+      try {
+        await pool.query('ALTER TABLE usuarios ADD COLUMN reset_token VARCHAR(100)');
+        addedColumns.push('reset_token');
+      } catch (err) {
+        if (!err.message.includes('already exists')) {
+          throw err;
+        }
+      }
     }
+    
+    if (!existingColumns.includes('reset_token_expiry')) {
+      try {
+        await pool.query('ALTER TABLE usuarios ADD COLUMN reset_token_expiry TIMESTAMP');
+        addedColumns.push('reset_token_expiry');
+      } catch (err) {
+        if (!err.message.includes('already exists')) {
+          throw err;
+        }
+      }
+    }
+
+    // Verificar novamente após adicionar
+    const finalCheck = await pool.query(`
+      SELECT column_name 
+      FROM information_schema.columns 
+      WHERE table_name = 'usuarios' 
+      AND column_name IN ('reset_token', 'reset_token_expiry')
+    `);
+
+    res.json({ 
+      success: true, 
+      message: 'Migração executada com sucesso!',
+      existingColumns: existingColumns,
+      addedColumns: addedColumns,
+      finalColumns: finalCheck.rows.map(row => row.column_name)
+    });
   } catch (err) {
     console.error('Erro na migração:', err);
-    res.status(500).json({ error: 'Erro na migração', details: err.message });
+    res.status(500).json({ erro: 'Erro ao executar migração', detalhes: err.message });
   }
 });
 
@@ -431,13 +461,20 @@ app.delete('/carrinho/:id', async (req, res) => {
 
 // Configuração do transporter do Nodemailer (via variáveis de ambiente)
 const transporter = nodemailer.createTransport({
+  service: 'gmail',
   host: 'smtp.gmail.com',
-  port: 465,
-  secure: true,
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
+  tls: {
+    rejectUnauthorized: false
+  },
+  connectionTimeout: 60000,
+  greetingTimeout: 30000,
+  socketTimeout: 60000
 });
 
 // Rota para recuperação de senha
