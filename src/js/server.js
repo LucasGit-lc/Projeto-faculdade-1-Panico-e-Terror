@@ -41,6 +41,38 @@ app.get(['/','/health'], (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
+// Rota temporária para migrar tabela usuarios (adicionar colunas reset_token)
+app.get('/migrate-usuarios', async (req, res) => {
+  if (!pool) {
+    return res.status(500).json({ error: 'Banco de dados não configurado' });
+  }
+  
+  try {
+    // Verificar se as colunas já existem
+    const checkColumns = await pool.query(`
+      SELECT column_name 
+      FROM information_schema.columns 
+      WHERE table_name = 'usuarios' 
+      AND column_name IN ('reset_token', 'reset_token_expiry')
+    `);
+    
+    if (checkColumns.rows.length === 0) {
+      // Adicionar as colunas se não existirem
+      await pool.query(`
+        ALTER TABLE usuarios 
+        ADD COLUMN IF NOT EXISTS reset_token VARCHAR(100),
+        ADD COLUMN IF NOT EXISTS reset_token_expiry TIMESTAMP
+      `);
+      res.json({ success: true, message: 'Colunas reset_token adicionadas com sucesso!' });
+    } else {
+      res.json({ success: true, message: 'Colunas reset_token já existem' });
+    }
+  } catch (err) {
+    console.error('Erro na migração:', err);
+    res.status(500).json({ error: 'Erro na migração', details: err.message });
+  }
+});
+
 // Configuração de conexão com o banco: SSL apenas em produção/ambiente que exige
 const enableSSL = (process.env.ENABLE_DB_SSL === 'true') || (process.env.NODE_ENV === 'production');
 const databaseUrl = process.env.DATABASE_URL;
