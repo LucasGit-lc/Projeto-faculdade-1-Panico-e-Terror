@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const port = location.port;
     const isLocalHost = host === 'localhost' || host === '127.0.0.1';
     const isStaticDev = isLocalHost && port && port !== '3000';
-    return isStaticDev ? 'http://localhost:3000' : '';
+    return isStaticDev ? 'http://localhost:3000' : location.origin;
   })();
   const form = document.getElementById("recuperarSenhaForm");
   const mensagemDiv = document.getElementById("mensagem");
