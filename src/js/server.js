@@ -16,6 +16,7 @@ app.use(cors({
   origin: [
     'https://lucasgit-lc.github.io',
     'https://lucasgit-lc.github.io/Projeto-faculdade-1-Panico-e-Terror',
+    'https://miraculous-enchantment-production.up.railway.app',
     'http://localhost:5500',
     'http://127.0.0.1:5500',
     'http://localhost:5501',
@@ -26,6 +27,9 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
+
+// Habilitar preflight para todas as rotas
+app.options('*', cors());
 
 app.use(express.json());
 
@@ -402,12 +406,12 @@ app.post('/recuperar-senha', async (req, res) => {
   const { email } = req.body;
   
   if (!email || !email.includes('@')) {
-    return res.status(400).send('Email inválido!');
+    return res.status(400).json({ erro: 'Email inválido!' });
   }
   
   try {
     if (!pool) {
-      return res.status(503).send('Banco de dados não configurado. Defina a variável DATABASE_URL.');
+      return res.status(503).json({ erro: 'Banco de dados não configurado. Defina a variável DATABASE_URL.' });
     }
     
     // Verificar se o email existe
@@ -415,7 +419,7 @@ app.post('/recuperar-senha', async (req, res) => {
     
     if (resultado.rows.length === 0) {
       // Por segurança, não informamos que o email não existe
-      return res.status(200).send('Se o email estiver cadastrado, você receberá instruções para redefinir sua senha.');
+      return res.status(200).json({ mensagem: 'Se o email estiver cadastrado, você receberá instruções para redefinir sua senha.' });
     }
     
     // Gerar token seguro
@@ -463,11 +467,11 @@ app.post('/recuperar-senha', async (req, res) => {
     // Para testar sem enviar emails reais, exibimos o link no console
     console.log('Link de redefinição (para teste):', resetLink);
     
-    res.status(200).send('Instruções de recuperação enviadas para seu email.');
+    res.status(200).json({ mensagem: 'Instruções de recuperação enviadas para seu email.' });
     
   } catch (err) {
     console.error(err);
-    res.status(500).send('Erro ao processar solicitação de recuperação de senha');
+    res.status(500).json({ erro: 'Erro ao processar solicitação de recuperação de senha' });
   }
 });
 

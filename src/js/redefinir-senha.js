@@ -1,12 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Base dinâmica: produção usa mesma origem; local usa API em 3000
+  // Base dinâmica: se estiver em servidor estático local (porta != 3000), aponta para API em 3000; caso contrário usa mesma origem
   const API_BASE = (() => {
-    const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-    if (isLocal) {
-      return 'http://localhost:3000';
-    }
-    // produção: mesma origem
-    return '';
+    const host = location.hostname;
+    const port = location.port;
+    const isLocalHost = host === 'localhost' || host === '127.0.0.1';
+    const isStaticDev = isLocalHost && port && port !== '3000';
+    return isStaticDev ? 'http://localhost:3000' : '';
   })();
 
   const form = document.getElementById("redefinirSenhaForm");
@@ -64,7 +63,8 @@ document.addEventListener("DOMContentLoaded", function () {
     })
       .then(async (response) => {
         if (response.ok) {
-          mensagemDiv.textContent = "Senha redefinida com sucesso!";
+          const data = await response.json().catch(() => ({}));
+          mensagemDiv.textContent = data?.mensagem || "Senha redefinida com sucesso!";
           mensagemDiv.className = "mensagem sucesso";
           form.reset();
           
@@ -73,22 +73,16 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = "login.html";
           }, 2000);
         } else {
-          return response.text().then((texto) => {
-            mensagemDiv.textContent = texto || "Erro ao redefinir senha";
-            mensagemDiv.className = "mensagem erro";
-          });
+          const texto = await response.text();
+          mensagemDiv.textContent = "Erro ao redefinir senha. Tente novamente.";
+          mensagemDiv.className = "mensagem erro";
+          console.error("Erro /redefinir-senha:", response.status, texto);
         }
       })
       .catch((error) => {
-        // Em caso de erro de conexão, simular sucesso para demonstração
-        console.error("Erro:", error);
-        mensagemDiv.textContent = "Senha redefinida com sucesso!";
-        mensagemDiv.className = "mensagem sucesso";
-        form.reset();
-        
-        setTimeout(() => {
-          window.location.href = "login.html";
-        }, 2000);
+        console.error("Erro de conexão:", error);
+        mensagemDiv.textContent = "Falha de conexão com o servidor. Tente novamente.";
+        mensagemDiv.className = "mensagem erro";
       })
       .finally(() => {
         // Reabilitar botão

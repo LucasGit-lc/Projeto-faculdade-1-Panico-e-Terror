@@ -1,11 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Base dinâmica: produção usa mesma origem; local usa API em 3000
+  // Base dinâmica: se estiver em servidor estático local (porta != 3000), aponta para API em 3000; caso contrário usa mesma origem
   const API_BASE = (() => {
-    const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-    if (isLocal) {
-      return 'http://localhost:3000';
-    }
-    return '';
+    const host = location.hostname;
+    const port = location.port;
+    const isLocalHost = host === 'localhost' || host === '127.0.0.1';
+    const isStaticDev = isLocalHost && port && port !== '3000';
+    return isStaticDev ? 'http://localhost:3000' : '';
   })();
   const form = document.getElementById("recuperarSenhaForm");
   const mensagemDiv = document.getElementById("mensagem");
@@ -37,31 +37,22 @@ document.addEventListener("DOMContentLoaded", function () {
     })
       .then(async (response) => {
         if (response.ok) {
-          mensagemDiv.textContent = "Instruções de recuperação de senha enviadas para seu email!";
+          const data = await response.json().catch(() => ({}));
+          mensagemDiv.textContent = data?.mensagem || "Instruções de recuperação de senha enviadas para seu email!";
           mensagemDiv.className = "mensagem sucesso";
           form.reset();
-          
-          // Simulação de envio de email (em ambiente de produção, isso seria feito pelo backend)
-          setTimeout(() => {
-            alert(`Em um ambiente real, um email seria enviado para ${email} com instruções para redefinir a senha.`);
-          }, 1500);
         } else {
-          return response.text().then((texto) => {
-            mensagemDiv.textContent = texto || "Erro ao processar solicitação";
-            mensagemDiv.className = "mensagem erro";
-          });
+          const texto = await response.text();
+          // Evita exibir HTML bruto (ex.: 405 de servidor estático)
+          mensagemDiv.textContent = "Não foi possível enviar o link. Tente novamente.";
+          mensagemDiv.className = "mensagem erro";
+          console.error("Erro /recuperar-senha:", response.status, texto);
         }
       })
       .catch((error) => {
-        // Em caso de erro de conexão, simular sucesso para demonstração
-        console.error("Erro:", error);
-        mensagemDiv.textContent = "Instruções de recuperação de senha enviadas para seu email!";
-        mensagemDiv.className = "mensagem sucesso";
-        form.reset();
-        
-        setTimeout(() => {
-          alert(`Em um ambiente de demonstração, um email seria enviado para ${email} com instruções para redefinir a senha.`);
-        }, 1500);
+        console.error("Erro de conexão:", error);
+        mensagemDiv.textContent = "Falha de conexão com o servidor. Tente novamente.";
+        mensagemDiv.className = "mensagem erro";
       })
       .finally(() => {
         // Reabilitar botão
