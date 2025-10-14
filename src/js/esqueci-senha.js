@@ -41,8 +41,23 @@ document.addEventListener("DOMContentLoaded", function () {
       .then(async (response) => {
         if (response.ok) {
           const data = await response.json().catch(() => ({}));
-          mensagemDiv.textContent = data?.mensagem || "Instruções de recuperação de senha enviadas para seu email!";
-          mensagemDiv.className = "mensagem sucesso";
+          
+          if (data.showLink && data.resetLink) {
+            // Email falhou, mostrar link diretamente
+            mensagemDiv.innerHTML = `
+              <p>${data.mensagem}</p>
+              <div style="margin: 15px 0; padding: 15px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
+                <p><strong>Clique no link abaixo para redefinir sua senha:</strong></p>
+                <a href="${data.resetLink}" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #B32E25; color: white; text-decoration: none; border-radius: 5px; margin: 10px 0;">Redefinir Senha</a>
+                <p style="font-size: 12px; color: #666; margin-top: 10px;">Este link expira em 1 hora.</p>
+              </div>
+            `;
+            mensagemDiv.className = "mensagem sucesso";
+          } else {
+            // Email enviado com sucesso
+            mensagemDiv.textContent = data?.mensagem || "Instruções de recuperação de senha enviadas para seu email!";
+            mensagemDiv.className = "mensagem sucesso";
+          }
           form.reset();
         } else {
           const texto = await response.text();

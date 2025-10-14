@@ -459,18 +459,109 @@ app.delete('/carrinho/:id', async (req, res) => {
   }
 });
 
-// Configuração do transporter do Nodemailer (via variáveis de ambiente)
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-  pool: true,
-  maxConnections: 1,
-  rateDelta: 20000,
-  rateLimit: 5
-});
+// Função para detectar provedor de email e configurar SMTP
+function criarTransporter() {
+  const emailUser = process.env.EMAIL_USER;
+  
+  if (emailUser.includes('@gmail.com')) {
+    // Configuração para Gmail
+    return nodemailer.createTransporter({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false,
+        ciphers: 'SSLv3'
+      },
+      connectionTimeout: 60000,
+      greetingTimeout: 30000,
+      socketTimeout: 60000,
+      pool: true,
+      maxConnections: 1,
+      rateDelta: 20000,
+      rateLimit: 5,
+      debug: true,
+      logger: true
+    });
+  } else if (emailUser.includes('@outlook.com') || emailUser.includes('@hotmail.com')) {
+    // Configuração para Outlook/Hotmail
+    return nodemailer.createTransporter({
+      host: 'smtp-mail.outlook.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false
+      },
+      connectionTimeout: 60000,
+      greetingTimeout: 30000,
+      socketTimeout: 60000,
+      debug: true,
+      logger: true
+    });
+  } else {
+    // Configuração genérica
+    return nodemailer.createTransporter({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false
+      },
+      connectionTimeout: 60000,
+      greetingTimeout: 30000,
+      socketTimeout: 60000,
+      debug: true,
+      logger: true
+    });
+  }
+}
+
+// Configuração do transporter do Nodemailer
+const transporter = criarTransporter();
+
+// Função para enviar email com fallback
+async function enviarEmailComFallback(email, resetLink) {
+  try {
+    // Tentar enviar email
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Redefinição de Senha - Pânico e Terror',
+      html: `
+        <h2>Redefinição de Senha</h2>
+        <p>Você solicitou a redefinição de sua senha.</p>
+        <p>Clique no link abaixo para redefinir sua senha:</p>
+        <a href="${resetLink}" style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Redefinir Senha</a>
+        <p>Se o botão não funcionar, copie e cole este link no seu navegador:</p>
+        <p>${resetLink}</p>
+        <p>Este link expira em 1 hora.</p>
+      `
+    });
+    
+    return { success: true, method: 'email' };
+  } catch (error) {
+    console.log('Erro ao enviar email:', error.message);
+    // Se falhar, retornar o link para mostrar na tela
+    return { 
+      success: true, 
+      method: 'link', 
+      resetLink: resetLink,
+      message: 'Email temporariamente indisponível. Use o link abaixo:' 
+    };
+  }
+}
 
 // Rota para recuperação de senha
 app.post('/recuperar-senha', async (req, res) => {
@@ -510,35 +601,27 @@ app.post('/recuperar-senha', async (req, res) => {
     const baseUrl = process.env.APP_BASE_URL || `${req.protocol}://${req.get('host')}`;
     const resetLink = `${baseUrl}/redefinir-senha.html?token=${token}&email=${encodeURIComponent(email)}`;
     
-    // Configurar o email
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: 'Redefinição de Senha - Pânico e Terror',
-      html: `
-        <h1>Redefinição de Senha</h1>
-        <p>Olá,</p>
-        <p>Recebemos uma solicitação para redefinir sua senha.</p>
-        <p>Clique no link abaixo para criar uma nova senha:</p>
-        <a href="${resetLink}" style="display: inline-block; padding: 10px 20px; background-color: #B32E25; color: white; text-decoration: none; border-radius: 5px;">Redefinir Senha</a>
-        <p>Este link expira em 1 hora.</p>
-        <p>Se você não solicitou esta redefinição, ignore este email.</p>
-        <p>Atenciosamente,<br>Equipe Pânico e Terror</p>
-      `
-    };
+    // Usar a função híbrida para enviar email ou retornar link
+    const resultadoEmail = await enviarEmailComFallback(email, resetLink);
     
-    // Enviar o email
-    try {
-      const info = await transporter.sendMail(mailOptions);
-      console.log('Email enviado:', info.response);
-    } catch (error) {
-      console.error('Erro ao enviar email:', error);
-    }
-    
-    // Para testar sem enviar emails reais, exibimos o link no console
+    // Para testar, sempre exibir o link no console
     console.log('Link de redefinição (para teste):', resetLink);
     
-    res.status(200).json({ mensagem: 'Instruções de recuperação enviadas para seu email.' });
+    if (resultadoEmail.method === 'email') {
+      // Email enviado com sucesso
+      res.status(200).json({ 
+        mensagem: 'Instruções de recuperação enviadas para seu email.',
+        success: true
+      });
+    } else {
+      // Email falhou, retornar link diretamente
+      res.status(200).json({ 
+        mensagem: resultadoEmail.message,
+        resetLink: resultadoEmail.resetLink,
+        success: true,
+        showLink: true
+      });
+    }
     
   } catch (err) {
     console.error(err);
