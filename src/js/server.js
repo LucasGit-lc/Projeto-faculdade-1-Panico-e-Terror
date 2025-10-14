@@ -462,19 +462,14 @@ app.delete('/carrinho/:id', async (req, res) => {
 // Configuração do transporter do Nodemailer (via variáveis de ambiente)
 const transporter = nodemailer.createTransport({
   service: 'gmail',
-  host: 'smtp.gmail.com',
-  port: 587,
-  secure: false,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
-  tls: {
-    rejectUnauthorized: false
-  },
-  connectionTimeout: 60000,
-  greetingTimeout: 30000,
-  socketTimeout: 60000
+  pool: true,
+  maxConnections: 1,
+  rateDelta: 20000,
+  rateLimit: 5
 });
 
 // Rota para recuperação de senha
