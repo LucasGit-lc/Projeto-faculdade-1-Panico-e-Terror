@@ -1,4 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Base dinâmica: produção usa mesma origem; local usa API em 3000
+  const API_BASE = (() => {
+    const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+    if (isLocal) {
+      return 'http://localhost:3000';
+    }
+    // produção: mesma origem
+    return '';
+  })();
+
   const form = document.getElementById("redefinirSenhaForm");
   const mensagemDiv = document.getElementById("mensagem");
   
@@ -42,17 +52,15 @@ document.addEventListener("DOMContentLoaded", function () {
     submitBtn.disabled = true;
     submitBtn.textContent = 'Processando...';
 
-    const formData = new URLSearchParams();
-    formData.append("email", email);
-    formData.append("token", token);
-    formData.append("novaSenha", senha);
+    const endpoint = API_BASE ? `${API_BASE}/redefinir-senha` : `/redefinir-senha`;
+    const payload = { email, token, novaSenha: senha };
 
-    fetch("https://miraculous-enchantment-production.up.railway.app/redefinir-senha", {
+    fetch(endpoint, {
       method: "POST",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/json",
       },
-      body: formData,
+      body: JSON.stringify(payload),
     })
       .then(async (response) => {
         if (response.ok) {

@@ -1,4 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Base dinâmica: produção usa mesma origem; local usa API em 3000
+  const API_BASE = (() => {
+    const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+    if (isLocal) {
+      return 'http://localhost:3000';
+    }
+    return '';
+  })();
   const form = document.getElementById("recuperarSenhaForm");
   const mensagemDiv = document.getElementById("mensagem");
 
@@ -19,15 +27,13 @@ document.addEventListener("DOMContentLoaded", function () {
     submitBtn.disabled = true;
     submitBtn.textContent = 'Enviando...';
 
-    const formData = new URLSearchParams();
-    formData.append("email", email);
-
-    fetch("https://miraculous-enchantment-production.up.railway.app/recuperar-senha", {
+    const endpoint = API_BASE ? `${API_BASE}/recuperar-senha` : `/recuperar-senha`;
+    fetch(endpoint, {
       method: "POST",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/json",
       },
-      body: formData,
+      body: JSON.stringify({ email }),
     })
       .then(async (response) => {
         if (response.ok) {

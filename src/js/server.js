@@ -4,6 +4,7 @@ const { Pool } = require('pg');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 try {
   require('dotenv').config();
 } catch (error) {
@@ -17,6 +18,8 @@ app.use(cors({
     'https://lucasgit-lc.github.io/Projeto-faculdade-1-Panico-e-Terror',
     'http://localhost:5500',
     'http://127.0.0.1:5500',
+    'http://localhost:5501',
+    'http://127.0.0.1:5501',
     'http://localhost:3000',
     'http://127.0.0.1:3000'
   ],
@@ -385,13 +388,13 @@ app.delete('/carrinho/:id', async (req, res) => {
   }
 });
 
-// Configuração do transporter do Nodemailer
+// Configuração do transporter do Nodemailer (via variáveis de ambiente)
 const transporter = nodemailer.createTransport({
-  service: 'gmail',  // Você pode usar outros serviços como 'outlook', 'yahoo', etc.
+  service: 'gmail',
   auth: {
-    user: 'panico3terror@gmail.com',  // Substitua pelo seu email real
-    pass: 'panicoEterror0710'      // Use uma senha de aplicativo para maior segurança
-  }
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
 });
 
 // Rota para recuperação de senha
@@ -415,8 +418,8 @@ app.post('/recuperar-senha', async (req, res) => {
       return res.status(200).send('Se o email estiver cadastrado, você receberá instruções para redefinir sua senha.');
     }
     
-    // Gerar token único
-    const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    // Gerar token seguro
+    const token = crypto.randomBytes(32).toString('hex');
     
     // Definir expiração do token (1 hora)
     const expiry = new Date();
@@ -428,8 +431,9 @@ app.post('/recuperar-senha', async (req, res) => {
       [token, expiry, email]
     );
     
-    // Construir o link de redefinição
-    const resetLink = `http://localhost:5501/redefinir-senha.html?token=${token}&email=${encodeURIComponent(email)}`;
+    // Construir o link de redefinição (dinâmico: usa APP_BASE_URL se existir; caso contrário, host atual)
+    const baseUrl = process.env.APP_BASE_URL || `${req.protocol}://${req.get('host')}`;
+    const resetLink = `${baseUrl}/redefinir-senha.html?token=${token}&email=${encodeURIComponent(email)}`;
     
     // Configurar o email
     const mailOptions = {
@@ -449,13 +453,12 @@ app.post('/recuperar-senha', async (req, res) => {
     };
     
     // Enviar o email
-     transporter.sendMail(mailOptions, (error, info) => {
-       if (error) {
-         console.error('Erro ao enviar email:', error);
-       } else {
-         console.log('Email enviado:', info.response);
-       }
-     });
+    try {
+      const info = await transporter.sendMail(mailOptions);
+      console.log('Email enviado:', info.response);
+    } catch (error) {
+      console.error('Erro ao enviar email:', error);
+    }
     
     // Para testar sem enviar emails reais, exibimos o link no console
     console.log('Link de redefinição (para teste):', resetLink);
