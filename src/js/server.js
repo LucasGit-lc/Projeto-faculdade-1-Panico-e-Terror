@@ -36,6 +36,11 @@ app.use(express.json());
 // Servir arquivos estáticos
 app.use(express.static('.'));
 
+// Rota de health-check para verificação no Railway
+app.get(['/','/health'], (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
 // Configuração de conexão com o banco: SSL apenas em produção/ambiente que exige
 const enableSSL = (process.env.ENABLE_DB_SSL === 'true') || (process.env.NODE_ENV === 'production');
 const databaseUrl = process.env.DATABASE_URL;
@@ -394,7 +399,9 @@ app.delete('/carrinho/:id', async (req, res) => {
 
 // Configuração do transporter do Nodemailer (via variáveis de ambiente)
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
@@ -441,7 +448,7 @@ app.post('/recuperar-senha', async (req, res) => {
     
     // Configurar o email
     const mailOptions = {
-      from: 'panico3terror@gmail.com',
+      from: process.env.EMAIL_USER,
       to: email,
       subject: 'Redefinição de Senha - Pânico e Terror',
       html: `
