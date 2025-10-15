@@ -465,7 +465,7 @@ function criarTransporter() {
   
   if (emailUser.includes('@gmail.com')) {
     // Configuração para Gmail
-    return nodemailer.createTransporter({
+    return nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
       secure: false,
@@ -489,7 +489,7 @@ function criarTransporter() {
     });
   } else if (emailUser.includes('@outlook.com') || emailUser.includes('@hotmail.com')) {
     // Configuração para Outlook/Hotmail
-    return nodemailer.createTransporter({
+    return nodemailer.createTransport({
       host: 'smtp-mail.outlook.com',
       port: 587,
       secure: false,
@@ -508,7 +508,7 @@ function criarTransporter() {
     });
   } else {
     // Configuração genérica
-    return nodemailer.createTransporter({
+    return nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
       secure: false,
