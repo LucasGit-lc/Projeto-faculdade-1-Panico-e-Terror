@@ -4,6 +4,7 @@ const { Pool } = require('pg');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail');
 const crypto = require('crypto');
 try {
   require('dotenv').config();
@@ -531,29 +532,63 @@ function criarTransporter() {
 // Configuração do transporter do Nodemailer
 const transporter = criarTransporter();
 
+// Configurar SendGrid
+if (process.env.SENDGRID_API_KEY) {
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  console.log('SendGrid configurado com sucesso');
+} else {
+  console.log('SENDGRID_API_KEY não encontrada, usando apenas Nodemailer');
+}
+
 // Função para enviar email com fallback
 async function enviarEmailComFallback(email, resetLink) {
+  const emailContent = {
+    subject: 'Redefinição de Senha - Pânico e Terror',
+    html: `
+      <h2>Redefinição de Senha</h2>
+      <p>Você solicitou a redefinição de sua senha.</p>
+      <p>Clique no link abaixo para redefinir sua senha:</p>
+      <a href="${resetLink}" style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Redefinir Senha</a>
+      <p>Se o botão não funcionar, copie e cole este link no seu navegador:</p>
+      <p>${resetLink}</p>
+      <p>Este link expira em 1 hora.</p>
+    `
+  };
+
+  // Tentar SendGrid primeiro
+  if (process.env.SENDGRID_API_KEY && process.env.SENDGRID_FROM_EMAIL) {
+    try {
+      console.log('Tentando enviar email via SendGrid...');
+      await sgMail.send({
+        to: email,
+        from: process.env.SENDGRID_FROM_EMAIL,
+        subject: emailContent.subject,
+        html: emailContent.html
+      });
+      
+      console.log('Email enviado com sucesso via SendGrid');
+      return { success: true, method: 'sendgrid' };
+    } catch (error) {
+      console.log('Erro ao enviar via SendGrid:', error.message);
+      console.log('Tentando fallback para Nodemailer...');
+    }
+  }
+
+  // Fallback para Nodemailer
   try {
-    // Tentar enviar email
+    console.log('Tentando enviar email via Nodemailer...');
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
-      subject: 'Redefinição de Senha - Pânico e Terror',
-      html: `
-        <h2>Redefinição de Senha</h2>
-        <p>Você solicitou a redefinição de sua senha.</p>
-        <p>Clique no link abaixo para redefinir sua senha:</p>
-        <a href="${resetLink}" style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Redefinir Senha</a>
-        <p>Se o botão não funcionar, copie e cole este link no seu navegador:</p>
-        <p>${resetLink}</p>
-        <p>Este link expira em 1 hora.</p>
-      `
+      subject: emailContent.subject,
+      html: emailContent.html
     });
     
-    return { success: true, method: 'email' };
+    console.log('Email enviado com sucesso via Nodemailer');
+    return { success: true, method: 'nodemailer' };
   } catch (error) {
-    console.log('Erro ao enviar email:', error.message);
-    // Se falhar, retornar o link para mostrar na tela
+    console.log('Erro ao enviar via Nodemailer:', error.message);
+    // Se ambos falharem, retornar o link para mostrar na tela
     return { 
       success: true, 
       method: 'link', 
