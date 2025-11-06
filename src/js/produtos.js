@@ -9,6 +9,9 @@ const CART_KEY = (window.Sessao && typeof window.Sessao.getCartKey === 'function
 // Variáveis globais
 let produtos = [];
 let carrinho = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+let paginaAtual = 1;
+const produtosPorPagina = 6;
+let produtosFiltrados = [];
 
 // Elementos do DOM
 const productsGrid = document.getElementById('productsGrid');
@@ -17,6 +20,10 @@ const noProductsMessage = document.getElementById('noProductsMessage');
 const searchInput = document.getElementById('searchInput');
 const categoryFilter = document.getElementById('categoryFilter');
 const cartCount = document.getElementById('cartCount');
+const loadMoreBtn = document.createElement('button');
+loadMoreBtn.id = 'loadMoreBtn';
+loadMoreBtn.textContent = 'Carregar mais';
+loadMoreBtn.style.cssText = 'display:block;margin:20px auto;padding:10px 20px;background:#B32E25;color:#fff;border:none;border-radius:4px;cursor:pointer;';
 
 // Inicializar página
 document.addEventListener('DOMContentLoaded', function() {
@@ -26,7 +33,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Event listeners para filtros
     searchInput.addEventListener('input', debounce(filtrarProdutos, 300));
     categoryFilter.addEventListener('change', filtrarProdutos);
+
+    // Event listener para carregar mais
+    loadMoreBtn.addEventListener('click', carregarMaisProdutos);
+    productsGrid.after(loadMoreBtn);
 });
+
+// Lê categoria inicial da URL
+function getCategoriaFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    const categoria = params.get('categoria');
+    return categoria ? decodeURIComponent(categoria) : '';
+}
 
 // Função para carregar produtos da API
 async function carregarProdutos() {
@@ -37,6 +55,11 @@ async function carregarProdutos() {
         if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
             produtos = getProdutosMockados();
             exibirProdutos(produtos);
+            const categoriaInicial = getCategoriaFromURL();
+            if (categoriaInicial) {
+                categoryFilter.value = categoriaInicial;
+                filtrarProdutos();
+            }
         } else {
             const response = await fetch(`${API_BASE_URL}/produtos`);
             if (!response.ok) {
@@ -44,6 +67,11 @@ async function carregarProdutos() {
             }
             produtos = await response.json();
             exibirProdutos(produtos);
+            const categoriaInicial = getCategoriaFromURL();
+            if (categoriaInicial) {
+                categoryFilter.value = categoriaInicial;
+                filtrarProdutos();
+            }
         }
     } catch (error) {
         console.error('Erro ao carregar produtos:', error);
@@ -63,46 +91,72 @@ function getProdutosMockados() {
             nome: 'Tênis Run Pro Max',
             categoria: 'Tênis',
             preco: 299.90,
-            descricao: 'Tênis esportivo verde com detalhes em castanho e branco, design moderno e tecnologia de amortecimento avançada',
+            emOferta: true,
+            precoPromocional: 249.90,
+            descricao: 'Tênis esportivo com tecnologia de amortecimento avançada, design moderno e conforto excepcional',
             imagem_url: 'https://lojasdufins.com.br/cdn/shop/files/10_1_1_800x.webp?v=1745261891'
         },
         {
             id: 2,
-            nome: 'Camiseta Performance',
-            categoria: 'Camisetas',
-            preco: 89.90,
-            descricao: 'Camiseta esportiva de compressão preta com detalhes vermelhos e tecnologia dry-fit',
-            imagem_url: 'https://www.dominusfitness.com.br/cdn/shop/files/camisa_de_compress_o_masclina.webp?v=1757830123'
+            nome: 'Meia Cano Alto Pro',
+            categoria: 'Roupas',
+            preco: 29.90,
+            descricao: 'Meia esportiva de compressão com cano alto, amortecimento estratégico e tecnologia dry-fit',
+            imagem_url: 'https://m.media-amazon.com/images/I/51dfyNtWmOL._AC_SY606_.jpg'
         },
         {
             id: 3,
-            nome: 'Shorts Training Pro',
-            categoria: 'Shorts',
-            preco: 119.90,
-            descricao: 'Shorts esportivo preto com listras vermelhas laterais e bolso para celular',
-            imagem_url: 'https://static.netshoes.com.br/produtos/bermuda-adidas-3s-masculina/02/2FW-5549-002/2FW-5549-002_zoom1.jpg?ts=1695423672'
-        },
-        {
-            id: 4,
             nome: 'Jaqueta Windbreaker',
-            categoria: 'Jaquetas',
+            categoria: 'Roupas',
             preco: 199.90,
-            descricao: 'Jaqueta esportiva corta-vento vermelha com capuz e detalhes reflexivos',
+            emOferta: true,
+            precoPromocional: 149.90,
+            descricao: 'Jaqueta corta-vento com capuz, proteção contra vento e chuva leve, design esportivo',
             imagem_url: 'https://http2.mlstatic.com/D_NQ_NP_356611-MLB20597628199_022016-O.webp'
         },
         {
+            id: 4,
+            nome: 'Boné Running Dry',
+            categoria: 'Acessórios',
+            preco: 59.90,
+            descricao: 'Boné esportivo com tecnologia dry-fit, proteção UV e ajuste personalizável',
+            imagem_url: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+        },
+        {
             id: 5,
-            nome: 'Tênis Sport Elite',
-            categoria: 'Tênis',
-            preco: 349.90,
-            descricao: 'Tênis esportivo de alta performance com design moderno e tecnologia avançada de amortecimento',
-            imagem_url: 'https://olimpofit.com.br/cdn/shop/files/S927a584fe12544c9aa9b647a9df3c16bX_1024x1024@2x.webp?v=1719777153'
+            nome: 'Shorts Training Pro',
+            categoria: 'Roupas',
+            preco: 119.90,
+            emOferta: true,
+            precoPromocional: 99.90,
+            descricao: 'Shorts esportivo com bolso para celular, tecido respirável e design moderno',
+            imagem_url: 'https://static.netshoes.com.br/produtos/bermuda-adidas-3s-masculina/02/2FW-5549-002/2FW-5549-002_zoom1.jpg?ts=1695423672'
+        },
+        {
+            id: 6,
+            nome: 'Mochila Tática 25L',
+            categoria: 'Acessórios',
+            preco: 149.90,
+            descricao: 'Mochila tática resistente com compartimentos organizadores, ideal para aventuras outdoor',
+            imagem_url: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+        },
+        {
+            id: 7,
+            nome: 'Relógio Garmin Forerunner',
+            categoria: 'Acessórios',
+            preco: 899.90,
+            descricao: 'Smartwatch GPS com monitoramento de atividades, resistência à água e bateria longa duração',
+            imagem_url: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
         }
     ];
 }
 
 // Função para exibir produtos na grid
 function exibirProdutos(produtosParaExibir) {
+    const inicio = (paginaAtual - 1) * produtosPorPagina;
+    const fim = inicio + produtosPorPagina;
+    const produtosPagina = produtosParaExibir.slice(inicio, fim);
+
     if (produtosParaExibir.length === 0) {
         productsGrid.innerHTML = '';
         noProductsMessage.style.display = 'block';
@@ -110,23 +164,43 @@ function exibirProdutos(produtosParaExibir) {
     }
     
     noProductsMessage.style.display = 'none';
+
+    // Limpa grade se for primeira página
+    if (paginaAtual === 1) productsGrid.innerHTML = '';
     
-    productsGrid.innerHTML = produtosParaExibir.map(produto => `
+    // Renderiza apenas produtos da página atual
+    const cards = produtosPagina.map(produto => {
+        const precoAtual = produto.preco;
+        const precoPromo = produto.emOferta && produto.precoPromocional ? produto.precoPromocional : null;
+        const precoFormatado = precoAtual.toFixed(2).replace('.', ',');
+        const precoPromoFormatado = precoPromo ? precoPromo.toFixed(2).replace('.', ',') : null;
+        const priceHTML = (precoPromo)
+            ? `<div class="product-price"><span class="old-price">R$ ${precoFormatado}</span> <span class="promo-price">R$ ${precoPromoFormatado}</span></div>`
+            : `<div class="product-price">R$ ${precoFormatado}</div>`;
+
+        return `
         <div class="product-card">
             <div class="product-image">
-                <img src="${produto.imagem_url}" alt="${produto.descricao}" onerror="this.src='https://via.placeholder.com/250x250?text=Produto'">
+                ${produto.emOferta ? '<span class="badge-oferta">Oferta</span>' : ''}
+                <img src="${produto.imagem_url}" alt="${produto.descricao}" loading="lazy" width="250" height="250" onerror="this.src='https://via.placeholder.com/250x250?text=Produto'">
             </div>
             <div class="product-info">
                 <div class="product-category">${produto.categoria}</div>
                 <h3 class="product-title">${produto.nome}</h3>
                 <p class="product-description">${produto.descricao}</p>
-                <div class="product-price">R$ ${produto.preco.toFixed(2).replace('.', ',')}</div>
+                ${priceHTML}
                 <button class="add-to-cart" onclick="adicionarAoCarrinho(${produto.id})">
                     Adicionar ao Carrinho
                 </button>
             </div>
-        </div>
-    `).join('');
+        </div>`;
+    }).join('');
+
+    // Adiciona novos cards à grade
+    productsGrid.insertAdjacentHTML('beforeend', cards);
+
+    // Mostra/esconde botão Carregar mais
+    loadMoreBtn.style.display = (fim >= produtosParaExibir.length) ? 'none' : 'block';
 }
 
 // Função para filtrar produtos
@@ -134,7 +208,7 @@ function filtrarProdutos() {
     const termoBusca = searchInput.value.toLowerCase().trim();
     const categoriaFiltro = categoryFilter.value;
     
-    let produtosFiltrados = produtos.filter(produto => {
+    produtosFiltrados = produtos.filter(produto => {
         const matchBusca = !termoBusca || 
             produto.nome.toLowerCase().includes(termoBusca) ||
             produto.descricao.toLowerCase().includes(termoBusca);
@@ -143,7 +217,9 @@ function filtrarProdutos() {
         
         return matchBusca && matchCategoria;
     });
-    
+
+    // Reinicia paginação ao filtrar
+    paginaAtual = 1;
     exibirProdutos(produtosFiltrados);
 }
 
@@ -151,7 +227,20 @@ function filtrarProdutos() {
 function clearFilters() {
     searchInput.value = '';
     categoryFilter.value = '';
+    paginaAtual = 1;
+    productsGrid.innerHTML = '';
     exibirProdutos(produtos);
+    // Remove parâmetro de categoria da URL
+    if (window.history && typeof window.history.replaceState === 'function') {
+        const urlSemParams = window.location.pathname;
+        window.history.replaceState({}, document.title, urlSemParams);
+    }
+}
+
+// Função para carregar mais produtos
+function carregarMaisProdutos() {
+    paginaAtual++;
+    exibirProdutos(produtosFiltrados.length ? produtosFiltrados : produtos);
 }
 
 // Função para adicionar produto ao carrinho
@@ -172,7 +261,7 @@ function adicionarAoCarrinho(produtoId) {
             id: produto.id,
             nome: produto.nome,
             categoria: produto.categoria,
-            preco: produto.preco,
+            preco: (produto.emOferta && produto.precoPromocional) ? produto.precoPromocional : produto.preco,
             imagem_url: produto.imagem_url,
             quantidade: 1
         });

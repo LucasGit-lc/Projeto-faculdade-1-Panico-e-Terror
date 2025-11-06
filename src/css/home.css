@@ -209,6 +209,7 @@ nav a:hover {
 .product-image {
     height: 250px;
     overflow: hidden;
+    position: relative;
 }
 
 .product-image img {
@@ -244,6 +245,34 @@ nav a:hover {
     color: #FF0000;
     font-weight: bold;
     margin-bottom: 15px;
+}
+
+/* Badge de oferta */
+.badge-oferta {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #e74c3c;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 2;
+}
+
+/* Preços antigo e promocional */
+.product-price .old-price {
+    color: #cccccc;
+    text-decoration: line-through;
+    font-weight: 400;
+    margin-right: 10px;
+}
+
+.product-price .promo-price {
+    color: #FF0000;
+    font-weight: 700;
 }
 
 .add-to-cart {

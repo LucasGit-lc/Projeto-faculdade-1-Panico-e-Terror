@@ -125,3 +125,59 @@ body {
 .inputArea.login {
     gap: 25px;
 }
+/* Botão Voltar arredondado e flutuante */
+.back-button {
+    position: fixed;
+    top: 24px;
+    left: 24px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #B32E25;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 700;
+    box-shadow: 0 8px 18px rgba(179, 46, 37, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+
+.back-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(179, 46, 37, 0.45);
+    background: #8B0000;
+}
+
+.back-button:active {
+    transform: translateY(0);
+    box-shadow: 0 6px 12px rgba(139, 0, 0, 0.35);
+}
+
+.back-button:focus {
+    outline: 3px solid rgba(255, 255, 255, 0.35);
+    outline-offset: 4px;
+}
+
+/* Dentro do card de login/cadastro */
+.container { position: relative; }
+.container .back-button {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    left: auto;
+    width: auto;
+    height: auto;
+    border-radius: 10px;
+    padding: 6px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 4px 10px rgba(179, 46, 37, 0.25);
+}
+.container .back-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(179, 46, 37, 0.3);
+}

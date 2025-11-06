@@ -9,24 +9,45 @@ const produtosHome = {
     },
     2: {
         id: 2,
-        nome: 'Camiseta Performance',
-        categoria: 'Camisetas',
-        preco: 89.90,
-        imagem_url: 'https://www.dominusfitness.com.br/cdn/shop/files/camisa_de_compress_o_masclina.webp?v=1757830123'
+        nome: 'Meia Cano Alto Pro',
+        categoria: 'Roupas',
+        preco: 29.90,
+        imagem_url: 'https://m.media-amazon.com/images/I/51dfyNtWmOL._AC_SY606_.jpg'
     },
     3: {
         id: 3,
-        nome: 'Shorts Training Pro',
-        categoria: 'Shorts',
-        preco: 119.90,
-        imagem_url: 'https://static.netshoes.com.br/produtos/bermuda-adidas-3s-masculina/02/2FW-5549-002/2FW-5549-002_zoom1.jpg?ts=1695423672'
+        nome: 'Jaqueta Windbreaker',
+        categoria: 'Roupas',
+        preco: 199.90,
+        imagem_url: 'https://http2.mlstatic.com/D_NQ_NP_356611-MLB20597628199_022016-O.webp'
     },
     4: {
         id: 4,
-        nome: 'Jaqueta Windbreaker',
-        categoria: 'Jaquetas',
-        preco: 199.90,
-        imagem_url: 'https://http2.mlstatic.com/D_NQ_NP_356611-MLB20597628199_022016-O.webp'
+        nome: 'Boné Running Dry',
+        categoria: 'Acessórios',
+        preco: 59.90,
+        imagem_url: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80'
+    },
+    5: {
+        id: 5,
+        nome: 'Shorts Training Pro',
+        categoria: 'Roupas',
+        preco: 119.90,
+        imagem_url: 'https://static.netshoes.com.br/produtos/bermuda-adidas-3s-masculina/02/2FW-5549-002/2FW-5549-002_zoom1.jpg?ts=1695423672'
+    },
+    6: {
+        id: 6,
+        nome: 'Mochila Tática 25L',
+        categoria: 'Acessórios',
+        preco: 149.90,
+        imagem_url: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80'
+    },
+    7: {
+        id: 7,
+        nome: 'Relógio Garmin Forerunner',
+        categoria: 'Acessórios',
+        preco: 899.90,
+        imagem_url: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80'
     }
 };
 

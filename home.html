@@ -15,7 +15,6 @@
                 <div class="logo">Panico<span>Terror</span></div>
                 <nav>
                     <ul>
-                        <li><a href="home.html" class="active">Home</a></li>
                         <li><a href="produtos.html">Produtos</a></li>
                         <li><a href="#categorias">Categorias</a></li>
                         <li><a href="#ofertas">Ofertas</a></li>
@@ -39,7 +38,7 @@
             <div class="hero-content">
                 <h1>ELEVE SEU ESTILO ESPORTIVO</h1>
                 <p>Descubra a mais nova coleção de moda esportiva com design inovador e tecnologia de ponta para maximizar seu desempenho</p>
-                <button class="cta-btn">Ver Coleção</button>
+                <button class="cta-btn" onclick="window.location.href='produtos.html'">Ver Coleção</button>
             </div>
         </div>
     </section>
@@ -52,12 +51,13 @@
                 
                 <div class="product-card">
                     <div class="product-image">
+                        <span class="badge-oferta">Oferta</span>
                         <img src="https://lojasdufins.com.br/cdn/shop/files/10_1_1_800x.webp?v=1745261891" alt="Tênis esportivo verde com detalhes em castanho e branco, design moderno e tecnologia de amortecimento avançada">
                     </div>
                     <div class="product-info">
                         <div class="product-category">Tênis</div>
                         <h3 class="product-title">Tênis Run Pro Max</h3>
-                        <div class="product-price">R$ 299,90</div>
+                        <div class="product-price"><span class="old-price">R$ 299,90</span> <span class="promo-price">R$ 249,90</span></div>
                         <button class="add-to-cart" onclick="adicionarAoCarrinhoHome(1)">Adicionar ao Carrinho</button>
                     </div>
                 </div>
@@ -78,24 +78,26 @@
             
                 <div class="product-card">
                     <div class="product-image">
+                        <span class="badge-oferta">Oferta</span>
                         <img src="https://static.netshoes.com.br/produtos/bermuda-adidas-3s-masculina/02/2FW-5549-002/2FW-5549-002_zoom1.jpg?ts=1695423672" alt="Shorts esportivo preto com listras vermelhas laterais e bolso para celular">
                     </div>
                     <div class="product-info">
                         <div class="product-category">Shorts</div>
                         <h3 class="product-title">Shorts Training Pro</h3>
-                        <div class="product-price">R$ 119,90</div>
+                        <div class="product-price"><span class="old-price">R$ 119,90</span> <span class="promo-price">R$ 99,90</span></div>
                         <button class="add-to-cart" onclick="adicionarAoCarrinhoHome(3)">Adicionar ao Carrinho</button>
                     </div>
                 </div>
 
                 <div class="product-card">
                     <div class="product-image">
+                        <span class="badge-oferta">Oferta</span>
                         <img src="https://http2.mlstatic.com/D_NQ_NP_356611-MLB20597628199_022016-O.webp" alt="Jaqueta esportiva corta-vento vermelha com capuz e detalhes reflexivos">
                     </div>
                     <div class="product-info">
                         <div class="product-category">Jaquetas</div>
                         <h3 class="product-title">Jaqueta Windbreaker</h3>
-                        <div class="product-price">R$ 199,90</div>
+                        <div class="product-price"><span class="old-price">R$ 199,90</span> <span class="promo-price">R$ 149,90</span></div>
                         <button class="add-to-cart" onclick="adicionarAoCarrinhoHome(4)">Adicionar ao Carrinho</button>
                     </div>
                 </div>
@@ -108,26 +110,26 @@
         <div class="container">
             <h2 class="section-title">Categorias</h2>
             <div class="categories-grid">
-                <div class="category-card">
+                <a class="category-card" href="produtos.html?categoria=T%C3%AAnis">
                     <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/9af75f94-422b-4e4a-a67a-f5a36f70fea8.png" alt="Coleção de tênis esportivos modernos em diversas cores e modelos">
                     <div class="category-overlay">
                         <h3 class="category-title">Tênis</h3>
                     </div>
-                </div>
+                </a>
 
-                <div class="category-card">
+                <a class="category-card" href="produtos.html?categoria=Roupas">
                     <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8553a684-3053-4adb-9a0d-efb71b9e18ae.png" alt="Roupas de treino com tecnologia avançada para máximo conforto">
                     <div class="category-overlay">
                         <h3 class="category-title">Roupas</h3>
                     </div>
-                </div>
+                </a>
 
-                <div class="category-card">
+                <a class="category-card" href="produtos.html?categoria=Acess%C3%B3rios">
                     <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/911a68bf-0c59-4750-a8ae-c768fb8c1f22.png" alt="Acessórios esportivos incluindo mochilas, garrafas e equipamentos">
                     <div class="category-overlay">
                         <h3 class="category-title">Acessórios</h3>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </section>

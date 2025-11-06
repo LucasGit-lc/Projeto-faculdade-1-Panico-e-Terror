@@ -15,8 +15,8 @@
                 <div class="logo">Panico<span>Terror</span></div>
                 <nav>
                     <ul>
-                        <li><a href="home.html">Home</a></li>
-                        <li><a href="produtos.html" class="active">Produtos</a></li>
+                        <li><a href="home.html">Voltar</a></li>
+          <li><a href="produtos.html" class="active">Produtos</a></li>
                         <li><a href="home.html#categorias">Categorias</a></li>
                         <li><a href="home.html#ofertas">Ofertas</a></li>
                         <!-- Contato removido -->
@@ -51,10 +51,9 @@
                 <label for="categoryFilter">Categoria:</label>
                 <select id="categoryFilter">
                     <option value="">Todas as categorias</option>
+                    <option value="Roupas">Roupas</option>
                     <option value="Tênis">Tênis</option>
-                    <option value="Camisetas">Camisetas</option>
-                    <option value="Shorts">Shorts</option>
-                    <option value="Jaquetas">Jaquetas</option>
+                    <option value="Acessórios">Acessórios</option>
                 </select>
             </div>
             
@@ -66,6 +65,57 @@
         
         <div id="productsGrid" class="products-grid"></div>
     </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>panicoeterror</h3>
+                    <p>Sua loja especializada em moda esportiva de alta qualidade com os melhores preços do mercado.</p>
+                    <div class="social-links">
+                        <a href="#">FB</a>
+                        <a href="#">IG</a>
+                        <a href="#">TW</a>
+                        <a href="#">YT</a>
+                    </div>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Produtos</h3>
+                    <ul>
+                        <li><a href="produtos.html?categoria=T%C3%AAnis">Tênis</a></li>
+                        <li><a href="produtos.html?categoria=Roupas">Roupas</a></li>
+                        <li><a href="produtos.html?categoria=Acess%C3%B3rios">Acessórios</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="suporte-central.html">Central de Ajuda</a></li>
+                        <li><a href="suporte-trocas.html">Trocas e Devoluções</a></li>
+                        <li><a href="suporte-entregas.html">Entregas</a></li>
+                        <li><a href="suporte-prazos.html">Prazos de Entrega</a></li>
+                        <li><a href="suporte-pagamento.html">Formas de Pagamento</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li>Email: contato@panicoeterror.com</li>
+                        <li>Telefone: (61) 9999-9999</li>
+                        <li>Endereço: </li>
+                        <li>Brasilia- DF</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="copyright">
+                <p>© 2025 Panico e Terror. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
 
     <script src="./src/js/sessao.js"></script>
     <script src="./src/js/produtos.js"></script>
