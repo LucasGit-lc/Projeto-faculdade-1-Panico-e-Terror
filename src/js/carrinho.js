@@ -155,7 +155,7 @@ function finalizarCompra() {
         mostrarNotificacao('Seu carrinho está vazio!', 'warning');
         return;
     }
-    
+
     // Verificar se usuário está logado
     const usuarioLogado = localStorage.getItem('usuarioLogado');
     if (!usuarioLogado) {
@@ -164,35 +164,102 @@ function finalizarCompra() {
         }
         return;
     }
+
+    // Mostrar modal de checkout
+    abrirCheckout();
+}
+
+// Função para abrir modal de checkout
+function abrirCheckout() {
+    const checkoutModal = document.getElementById('checkoutModal');
+    checkoutModal.style.display = 'flex';
     
-    // Simular processo de checkout
+    // Atualizar resumo no checkout
     const total = carrinho.reduce((total, item) => total + (item.preco * item.quantidade), 0);
     const frete = total >= 200 ? 0 : 15.90;
     const totalFinal = total + frete;
+
+    document.getElementById('checkoutSubtotal').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+    document.getElementById('checkoutFrete').textContent = frete === 0 ? 'Grátis' : `R$ ${frete.toFixed(2).replace('.', ',')}`;
+    document.getElementById('checkoutTotal').textContent = `R$ ${totalFinal.toFixed(2).replace('.', ',')}`;
     
+    // Preencher dados do usuário logado se disponível
+    const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
+    if (usuarioLogado) {
+        if (usuarioLogado.nome) document.getElementById('nomeCompleto').value = usuarioLogado.nome;
+        if (usuarioLogado.email) document.getElementById('email').value = usuarioLogado.email;
+    }
+}
+
+// Função para fechar modal de checkout
+function fecharCheckout() {
+    const checkoutModal = document.getElementById('checkoutModal');
+    checkoutModal.style.display = 'none';
+}
+
+// Função para confirmar compra
+function confirmarCompra(event) {
+    event.preventDefault();
+
+    // Validar formulário
+    const form = document.getElementById('checkoutForm');
+    if (!form.checkValidity()) {
+        mostrarNotificacao('Por favor, preencha todos os campos obrigatórios!', 'warning');
+        return;
+    }
+
+    // Coletar dados do formulário
+    const dadosCheckout = {
+        nomeCompleto: document.getElementById('nomeCompleto').value,
+        email: document.getElementById('email').value,
+        telefone: document.getElementById('telefone').value,
+        endereco: document.getElementById('endereco').value,
+        bairro: document.getElementById('bairro').value,
+        complemento: document.getElementById('complemento').value,
+        cidade: document.getElementById('cidade').value,
+        estado: document.getElementById('estado').value,
+        cep: document.getElementById('cep').value,
+        numeroCartao: document.getElementById('numeroCartao').value.slice(-4), // Apenas últimos 4 dígitos
+        validade: document.getElementById('validade').value,
+        nomeTitular: document.getElementById('nomeTitular').value
+    };
+
+    // Calcular totais
+    const total = carrinho.reduce((total, item) => total + (item.preco * item.quantidade), 0);
+    const frete = total >= 200 ? 0 : 15.90;
+    const totalFinal = total + frete;
+
     const resumoPedido = {
+        id: Date.now(),
         itens: carrinho,
         subtotal: total,
         frete: frete,
         total: totalFinal,
         data: new Date().toISOString(),
-        usuario: JSON.parse(usuarioLogado)
+        dadosEntrega: dadosCheckout,
+        usuario: JSON.parse(localStorage.getItem('usuarioLogado'))
     };
-    
-    // Salvar pedido no localStorage (em um sistema real, seria enviado para o servidor)
+
+    // Salvar pedido no localStorage
     const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
     pedidos.push(resumoPedido);
     localStorage.setItem('pedidos', JSON.stringify(pedidos));
-    
+
     // Limpar carrinho
     carrinho = [];
     salvarCarrinho();
-    
-    // Mostrar confirmação
-    alert(`Pedido realizado com sucesso!\n\nTotal: R$ ${totalFinal.toFixed(2).replace('.', ',')}\n\nVocê receberá um e-mail de confirmação em breve.`);
-    
-    // Redirecionar para página de produtos
-    window.location.href = 'produtos.html';
+
+    // Fechar modal
+    fecharCheckout();
+
+    // Mostrar confirmação com número de pedido
+    const numeroPedido = resumoPedido.id.toString().slice(-6);
+    mostrarNotificacao(`✅ Pedido realizado com sucesso!\n\nNúmero do Pedido: ${numeroPedido}\nTotal: R$ ${totalFinal.toFixed(2).replace('.', ',')}\n\nUm email de confirmação foi enviado para ${dadosCheckout.email}`, 'success');
+
+    // Redirecionar após 2 segundos
+    setTimeout(() => {
+        window.location.href = 'produtos.html';
+    }, 2000);
 }
 
 // Função para limpar carrinho
@@ -228,8 +295,11 @@ function mostrarNotificacao(mensagem, tipo = 'success') {
         box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         z-index: 10000;
         font-weight: bold;
-        max-width: 300px;
+        max-width: 350px;
         animation: slideIn 0.3s ease;
+        white-space: pre-line;
+        word-wrap: break-word;
+        line-height: 1.5;
     `;
     notificacao.textContent = mensagem;
     

@@ -77,6 +77,126 @@
         </div>
     </div>
 
+    <!-- Modal de Checkout -->
+    <div id="checkoutModal" class="checkout-modal" style="display: none;">
+        <div class="checkout-modal-content">
+            <button class="modal-close" onclick="fecharCheckout()">×</button>
+            
+            <div class="checkout-container">
+                <div class="checkout-header">
+                    <h2>Finalizar Compra</h2>
+                    <p>Preencha seus dados para completar o pedido</p>
+                </div>
+
+                <form id="checkoutForm" onsubmit="confirmarCompra(event)">
+                    <!-- Dados Pessoais -->
+                    <div class="form-section">
+                        <h3>Dados Pessoais</h3>
+                        
+                        <div class="form-group">
+                            <label for="nomeCompleto">Nome Completo *</label>
+                            <input type="text" id="nomeCompleto" name="nomeCompleto" required placeholder="Digite seu nome completo">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required placeholder="seu@email.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telefone">Telefone *</label>
+                            <input type="tel" id="telefone" name="telefone" required placeholder="(61) 99999-9999">
+                        </div>
+                    </div>
+
+                    <!-- Endereço de Entrega -->
+                    <div class="form-section">
+                        <h3>Endereço de Entrega</h3>
+                        
+                        <div class="form-group">
+                            <label for="endereco">Endereço *</label>
+                            <input type="text" id="endereco" name="endereco" required placeholder="Rua, número">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="bairro">Bairro *</label>
+                                <input type="text" id="bairro" name="bairro" required placeholder="Bairro">
+                            </div>
+                            <div class="form-group">
+                                <label for="complemento">Complemento</label>
+                                <input type="text" id="complemento" name="complemento" placeholder="Apto, sala, etc (opcional)">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="cidade">Cidade *</label>
+                                <input type="text" id="cidade" name="cidade" required placeholder="Brasília">
+                            </div>
+                            <div class="form-group">
+                                <label for="estado">Estado *</label>
+                                <input type="text" id="estado" name="estado" required placeholder="DF">
+                            </div>
+                            <div class="form-group">
+                                <label for="cep">CEP *</label>
+                                <input type="text" id="cep" name="cep" required placeholder="72000-000">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dados de Pagamento (Fake) -->
+                    <div class="form-section">
+                        <h3>Dados de Pagamento</h3>
+                        
+                        <div class="form-group">
+                            <label for="numeroCartao">Número do Cartão *</label>
+                            <input type="text" id="numeroCartao" name="numeroCartao" required placeholder="1234 5678 9012 3456" maxlength="19">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="validade">Validade *</label>
+                                <input type="text" id="validade" name="validade" required placeholder="MM/AA" maxlength="5">
+                            </div>
+                            <div class="form-group">
+                                <label for="cvv">CVV *</label>
+                                <input type="text" id="cvv" name="cvv" required placeholder="123" maxlength="3">
+                            </div>
+                            <div class="form-group">
+                                <label for="nomeTitular">Nome do Titular *</label>
+                                <input type="text" id="nomeTitular" name="nomeTitular" required placeholder="Como consta no cartão">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resumo do Pedido -->
+                    <div class="checkout-summary">
+                        <h3>Resumo do Pedido</h3>
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="checkoutSubtotal">R$ 0,00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Frete:</span>
+                            <span id="checkoutFrete">R$ 0,00</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total:</span>
+                            <span id="checkoutTotal">R$ 0,00</span>
+                        </div>
+                    </div>
+
+                    <!-- Botões -->
+                    <div class="checkout-buttons">
+                        <button type="button" class="btn-cancelar" onclick="fecharCheckout()">Cancelar</button>
+                        <button type="submit" class="btn-confirmar">Confirmar Compra</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script src="./src/js/sessao.js"></script>
     <script src="./src/js/carrinho.js"></script>
 </body>
