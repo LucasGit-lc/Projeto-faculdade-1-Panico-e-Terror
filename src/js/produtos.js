@@ -37,6 +37,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Event listener para carregar mais
     loadMoreBtn.addEventListener('click', carregarMaisProdutos);
     productsGrid.after(loadMoreBtn);
+    
+    // Aplica filtro de categoria da URL após carregar
+    setTimeout(() => {
+        const categoriaInicial = getCategoriaFromURL();
+        if (categoriaInicial) {
+            categoryFilter.value = categoriaInicial;
+            filtrarProdutos();
+        }
+    }, 100);
 });
 
 // Lê categoria inicial da URL
@@ -55,11 +64,6 @@ async function carregarProdutos() {
         if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
             produtos = getProdutosMockados();
             exibirProdutos(produtos);
-            const categoriaInicial = getCategoriaFromURL();
-            if (categoriaInicial) {
-                categoryFilter.value = categoriaInicial;
-                filtrarProdutos();
-            }
         } else {
             const response = await fetch(`${API_BASE_URL}/produtos`);
             if (!response.ok) {
@@ -67,11 +71,6 @@ async function carregarProdutos() {
             }
             produtos = await response.json();
             exibirProdutos(produtos);
-            const categoriaInicial = getCategoriaFromURL();
-            if (categoriaInicial) {
-                categoryFilter.value = categoriaInicial;
-                filtrarProdutos();
-            }
         }
     } catch (error) {
         console.error('Erro ao carregar produtos:', error);
