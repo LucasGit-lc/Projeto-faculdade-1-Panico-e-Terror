@@ -60,18 +60,9 @@ async function carregarProdutos() {
     try {
         showLoading(true);
         
-        // Para desenvolvimento local, usar dados mockados
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            produtos = getProdutosMockados();
-            exibirProdutos(produtos);
-        } else {
-            const response = await fetch(`${API_BASE_URL}/produtos`);
-            if (!response.ok) {
-                throw new Error('Erro ao carregar produtos');
-            }
-            produtos = await response.json();
-            exibirProdutos(produtos);
-        }
+        // Usar dados mockados (funciona tanto local quanto no GitHub Pages)
+        produtos = getProdutosMockados();
+        exibirProdutos(produtos);
     } catch (error) {
         console.error('Erro ao carregar produtos:', error);
         // Fallback para dados mockados em caso de erro
