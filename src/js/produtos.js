@@ -8,7 +8,8 @@ const CART_KEY = (window.Sessao && typeof window.Sessao.getCartKey === 'function
 
 // Variáveis globais
 let produtos = [];
-let carrinho = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+let carrinho = (window.SECURITY && window.SECURITY.carregarDadosProtegidos(CART_KEY)) || 
+               JSON.parse(localStorage.getItem(CART_KEY)) || [];
 let paginaAtual = 1;
 const produtosPorPagina = 6;
 let produtosFiltrados = [];
@@ -257,8 +258,12 @@ function adicionarAoCarrinho(produtoId) {
         });
     }
     
-    // Salvar no localStorage por usuário
-    localStorage.setItem(CART_KEY, JSON.stringify(carrinho));
+    // Salvar no localStorage por usuário (com proteção de segurança)
+    if (window.SECURITY) {
+        window.SECURITY.salvarDadosProtegidos(CART_KEY, carrinho);
+    } else {
+        localStorage.setItem(CART_KEY, JSON.stringify(carrinho));
+    }
     
     // Atualizar contador do carrinho
     atualizarContadorCarrinho();

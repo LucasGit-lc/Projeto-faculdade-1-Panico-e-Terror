@@ -2,7 +2,7 @@
 const CART_KEY = (window.Sessao && typeof window.Sessao.getCartKey === 'function')
   ? window.Sessao.getCartKey()
   : 'carrinho';
-let carrinho = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+let carrinho = (window.SECURITY && window.SECURITY.carregarDadosProtegidos(CART_KEY)) || [];
 
 // Elementos do DOM
 const cartContent = document.getElementById('cartContent');
@@ -69,6 +69,12 @@ function exibirCarrinho() {
 
 // Função para alterar quantidade
 function alterarQuantidade(itemId, delta) {
+    // Validar entrada - delta deve ser -1 ou 1
+    if (!Number.isInteger(delta) || Math.abs(delta) > 1) {
+        window.SECURITY.registrarAtividadeSuspeita('Tentativa de delta inválido em alterarQuantidade');
+        return;
+    }
+    
     const item = carrinho.find(item => item.id === itemId);
     if (!item) return;
     
@@ -143,7 +149,15 @@ function atualizarResumo() {
 
 // Função para salvar carrinho no localStorage
 function salvarCarrinho() {
-    localStorage.setItem(CART_KEY, JSON.stringify(carrinho));
+    // Validar carrinho antes de salvar
+    if (!window.SECURITY.validarCarrinho(carrinho)) {
+        console.error('❌ Carrinho inválido detectado. Não será salvo.');
+        window.SECURITY.registrarAtividadeSuspeita('Tentativa de salvar carrinho inválido');
+        return;
+    }
+    
+    // Salvar com proteção
+    window.SECURITY.salvarDadosProtegidos(CART_KEY, carrinho);
     
     // Atualizar contador do carrinho em outras páginas
     window.dispatchEvent(new Event('carrinhoAtualizado'));
@@ -201,10 +215,24 @@ function fecharCheckout() {
 function confirmarCompra(event) {
     event.preventDefault();
 
+    // Detectar manipulação
+    if (window.SECURITY.detectarManipulacao()) {
+        window.SECURITY.registrarAtividadeSuspeita('DevTools detectado durante checkout');
+        mostrarNotificacao('⚠️ Atividade suspeita detectada. Por segurança, o checkout foi cancelado.', 'error');
+        return;
+    }
+
     // Validar formulário
     const form = document.getElementById('checkoutForm');
     if (!form.checkValidity()) {
         mostrarNotificacao('Por favor, preencha todos os campos obrigatórios!', 'warning');
+        return;
+    }
+
+    // Validar carrinho novamente
+    if (!window.SECURITY.validarCarrinho(carrinho)) {
+        mostrarNotificacao('❌ Carrinho inválido detectado. Compra cancelada.', 'error');
+        window.SECURITY.registrarAtividadeSuspeita('Tentativa de compra com carrinho manipulado');
         return;
     }
 
@@ -228,6 +256,13 @@ function confirmarCompra(event) {
     const total = carrinho.reduce((total, item) => total + (item.preco * item.quantidade), 0);
     const frete = total >= 200 ? 0 : 15.90;
     const totalFinal = total + frete;
+
+    // Validar dados do checkout
+    const validacao = window.SECURITY.validarCheckout(dadosCheckout);
+    if (!validacao.valido) {
+        mostrarNotificacao('Dados inválidos:\n' + validacao.erros.join('\n'), 'error');
+        return;
+    }
 
     const resumoPedido = {
         id: Date.now(),
