@@ -99,6 +99,8 @@ nav a:hover {
     background: #2a2a2a;
     border-radius: 25px;
     padding: 8px 15px;
+    align-items: center;
+    gap: 8px;
 }
 
 .search-bar input {
@@ -107,6 +109,27 @@ nav a:hover {
     color: #ffffff;
     outline: none;
     width: 200px;
+}
+
+.search-bar input::placeholder {
+    color: #999999;
+}
+
+.search-bar button {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+}
+
+.search-bar button:hover {
+    color: #FF0000;
 }
 
 .cart-btn {

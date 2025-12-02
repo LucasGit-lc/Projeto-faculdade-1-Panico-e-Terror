@@ -39,12 +39,20 @@ document.addEventListener('DOMContentLoaded', function() {
     loadMoreBtn.addEventListener('click', carregarMaisProdutos);
     productsGrid.after(loadMoreBtn);
     
-    // Aplica filtro de categoria da URL após carregar
+    // Aplica filtros iniciais da URL após carregar
     setTimeout(() => {
-        const categoriaInicial = getCategoriaFromURL();
-        if (categoriaInicial) {
-            categoryFilter.value = categoriaInicial;
+        // Verificar se há busca na URL
+        const buscaInicial = getBuscaFromURL();
+        if (buscaInicial) {
+            searchInput.value = buscaInicial;
             filtrarProdutos();
+        } else {
+            // Se não há busca, verificar categoria
+            const categoriaInicial = getCategoriaFromURL();
+            if (categoriaInicial) {
+                categoryFilter.value = categoriaInicial;
+                filtrarProdutos();
+            }
         }
     }, 100);
 });
@@ -54,6 +62,13 @@ function getCategoriaFromURL() {
     const params = new URLSearchParams(window.location.search);
     const categoria = params.get('categoria');
     return categoria ? decodeURIComponent(categoria) : '';
+}
+
+// Lê termo de busca inicial da URL
+function getBuscaFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    const busca = params.get('busca');
+    return busca ? decodeURIComponent(busca) : '';
 }
 
 // Função para carregar produtos da API

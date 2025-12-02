@@ -126,3 +126,17 @@ function mostrarNotificacao(mensagem) {
         notificacao.remove();
     }, 3000);
 }
+
+// Função para buscar produtos na página inicial e ir para página de produtos
+function buscarProdutosHome() {
+    const termoBusca = document.getElementById('searchHomeProdutos').value.trim();
+    
+    if (!termoBusca) {
+        mostrarNotificacao('Por favor, digite um produto para buscar', 'warning');
+        return;
+    }
+    
+    // Redirecionar para página de produtos com termo de busca codificado na URL
+    const urlCodificada = encodeURIComponent(termoBusca);
+    window.location.href = `produtos.html?busca=${urlCodificada}`;
+}

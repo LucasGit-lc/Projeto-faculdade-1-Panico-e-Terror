@@ -22,7 +22,8 @@
                 </nav>
                 <div class="header-actions">
                     <div class="search-bar">
-                        <input type="text" placeholder="Buscar produtos...">
+                        <input type="text" id="searchHomeProdutos" placeholder="Buscar produtos..." onkeypress="if(event.key === 'Enter') buscarProdutosHome()">
+                        <button onclick="buscarProdutosHome()" style="background: none; border: none; cursor: pointer; font-size: 18px; padding: 0 10px;">🔍</button>
                     </div>
                     <a href="carrinho.html" class="cart-link" style="color: #e74c3c; text-decoration: none; margin-right: 15px; font-size: 20px;">🛒</a>
                     <a class="logar" href="login.html">Login</a>
